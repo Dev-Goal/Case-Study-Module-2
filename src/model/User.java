@@ -75,4 +75,28 @@ public class User {
     public void removeRole(Role role) {
         this.roles.remove(role);
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setCitizen(String citizen) {
+        this.citizen = citizen;
+    }
 }
