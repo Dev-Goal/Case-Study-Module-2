@@ -1,8 +1,6 @@
 package view;
 
-import model.Movie;
-import model.ScreenRoom;
-import model.User;
+import model.*;
 
 import java.util.Scanner;
 
@@ -40,11 +38,29 @@ public class CinemaView {
         System.out.println("Hình ảnh: " + movie.getImage());
         System.out.println("Trailer: " + movie.getTrailer());
         System.out.println("Mô tả: " + movie.getDesc());
+        System.out.println("Danh sách suất chiếu: " + movie.getShowtimes());
     }
 
     public void showDetailScreenRoom(ScreenRoom screenRoom) {
         System.out.println("Tên phòng chiếu: " + screenRoom.getNameScreenRoom());
         System.out.println("Số ghế: " + screenRoom.getNumberOfSeats());
+        System.out.println("Danh sách suất chiếu: " + screenRoom.getShowtimes());
     }
 
+    public void showDetailCinema(Cinema cinema) {
+        System.out.println("Tên rạp chiếu: " + cinema.getNameCinema());
+        System.out.println("Số phòng: " + cinema.getNumberOfScreenRoom());
+        System.out.println("Danh sách phòng chiếu: " + cinema.getNameScreenRoom());
+        System.out.println("Danh sách suất chiếu" + cinema.getShowtimes());
+    }
+
+    public void showDetailShowTime(Showtime showtime) {
+        System.out.println("Tên phim: " + showtime.getNameMovie());
+        System.out.println("Tên rạp: " + showtime.getNameCinema());
+        System.out.println("Tên phòng chiếu: " + showtime.getNameScreenRoom());
+        System.out.println("Thời lươợng: " + showtime.getDuration());
+        System.out.println("Bắt đầu lúc: " + showtime.getStartTime());
+        System.out.println("Kết thức lúc: " + showtime.getEndTime());
+        System.out.println("Số ghế: " + showtime.getNumberOfSeats());
+    }
 }

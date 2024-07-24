@@ -3,8 +3,12 @@ package controller;
 import model.*;
 import view.CinemaView;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class CinemaController {
     private final Map<String, User> userData = new HashMap<>();
@@ -12,6 +16,8 @@ public class CinemaController {
     private final Map<String, Cinema> cinemaData = new HashMap<>();
     private final Map<String, ScreenRoom> screenRoomData = new HashMap<>();
     private final Map<String, Showtime> showtimeData = new HashMap<>();
+    private final Map<String, Ticket> ticketData = new HashMap<>();
+    private final Map<String, Promotion> promotionData = new HashMap<>();
     private final CinemaView cinemaView = new CinemaView();
 
     public CinemaController() {
@@ -106,6 +112,14 @@ public class CinemaController {
             cinemaView.showMessage("19. Thêm suất chiếu");
             cinemaView.showMessage("20. Sửa suất chiếu");
             cinemaView.showMessage("21. Xóa suất chiếu");
+            cinemaView.showMessage("18. Hiển thị danh sách vé");
+            cinemaView.showMessage("19. Thêm vé");
+            cinemaView.showMessage("20. Sửa vé");
+            cinemaView.showMessage("21. Xóa vé");
+            cinemaView.showMessage("18. Hiển thị danh sách khuyến mãi");
+            cinemaView.showMessage("19. Thêm khuyến mãi");
+            cinemaView.showMessage("20. Sửa khuyến mãi");
+            cinemaView.showMessage("21. Xóa khuyến mãi");
             cinemaView.showMessage("50. Đăng xuất");
 
             String choice = cinemaView.getInput("Sự lựa chọn của bạn là: ");
@@ -127,6 +141,18 @@ public class CinemaController {
                 case "15" -> addCinema();
                 case "16" -> editCinema();
                 case "17" -> deleteCinema();
+                case "18"  -> showListShowTimes();
+                case "19" -> addShowTimes();
+                case "20" -> editShowTimes();
+                case "21" -> deleteShowTimes();
+                case "22"  -> showTicketList();
+                case "23" -> addTicket();
+                case "24" -> editTicket();
+                case "25" -> deleteTicket();
+                case "26"  -> showPromotionList();
+                case "27" -> addPromotion();
+                case "28" -> editPromotion();
+                case "29" -> deletePromotion();
                 case "50" -> {return;}
             }
         }while (true);
@@ -307,6 +333,10 @@ public class CinemaController {
     }
 
     private void showCinemaList() {
+        cinemaView.showMessage("Danh sách rạp chiếu phim");
+        for (Cinema cinema : cinemaData.values()) {
+            cinemaView.showDetailCinema(cinema);
+        }
     }
 
     private void addCinema() {
@@ -336,6 +366,145 @@ public class CinemaController {
     }
 
     private void deleteCinema() {
+        cinemaView.showMessage("Xóa rạp chiếu phim");
+        String nameCinema = cinemaView.getInput("Nhập tên rạp chiếu phim bạn muốn xóa: ");
+        Cinema cinema = cinemaData.get(nameCinema);
+        if (cinema == null) {
+            cinemaView.showMessage("Rạp chiếu phim không tồn tại");
+            return;
+        }
+        String message = cinemaView.getInput("Bạn có chắc chắn muốn xóa rạp chiếu này: ");
+        if (message.equalsIgnoreCase("Có")) {
+            cinemaData.remove(nameCinema);
+        }
+        cinemaView.showMessage("Xóa thành công");
+    }
+
+    private void showListShowTimes() {
+        cinemaView.showMessage("Danh sách suất chiếu");
+        for (Showtime showtime : showtimeData.values()) {
+            cinemaView.showDetailShowTime(showtime);
+        }
+    }
+
+    private void addShowTimes() {
+        cinemaView.showMessage("Thêm suất chiếu");
+        String nameMovie = cinemaView.getInput("Tên phim: ");
+        Movie movie = movieData.get(nameMovie);
+        if (movie == null) {
+            cinemaView.showMessage("Phim không tồn tại");
+            return;
+        }
+        String startTimeStr = cinemaView.getInput("Thời gian bắt đầu: ");
+        LocalDateTime startTime = LocalDateTime.parse(startTimeStr, DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy"));
+        LocalDateTime endTine = startTime.plusMinutes(movie.getDuration());
+        String nameCinema = cinemaView.getInput("Tên rạp chiếu: ");
+        Cinema cinema = cinemaData.get(nameCinema);
+        if (cinema == null) {
+            cinemaView.showMessage("Rạp chiếu không tồn tại");
+            return;
+        }
+        String nameScreenRoom = cinemaView.getInput("Tên phòng chiếu: ");
+        ScreenRoom screenRoom = screenRoomData.get(nameScreenRoom);
+        if (screenRoom == null) {
+            cinemaView.showMessage("Phòng chiếu không tồn tại");
+            return;
+        }
+        Showtime showtime = new Showtime(UUID.randomUUID().toString(), nameMovie, movie.getDuration(),
+                startTime, endTine, nameCinema, nameScreenRoom, screenRoom.getNumberOfSeats());
+        showtimeData.put(showtime.getIdShowtime(), showtime);
+        cinemaView.showMessage("Thêm suất chiếu thành công");
+    }
+
+    private void editShowTimes() {
+        cinemaView.showMessage("Chỉnh sửa suất chiếu");
+        String idShowtime = cinemaView.getInput("Nhập id suất chiếu cần sửa: ");
+        Showtime showtime = showtimeData.get(idShowtime);
+        if (showtime == null) {
+            cinemaView.showMessage("Suất chiếu không tồn tại");
+            return;
+        }
+        String nameMovie = cinemaView.getInput("Tên phim: ");
+        Movie movie = movieData.get(nameMovie);
+        if (movie == null) {
+            cinemaView.showMessage("Tên phim không tồn tại");
+            return;
+        }
+        String startTimeStr = cinemaView.getInput("Thời gian bắt đầu: ");
+        LocalDateTime startTime = LocalDateTime.parse(startTimeStr, DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy"));
+        LocalDateTime endTime = startTime.plusMinutes(showtime.getDuration());
+        String nameCinema = cinemaView.getInput("Tên rạp: ");
+        Cinema cinema = cinemaData.get(nameCinema);
+        if (cinema == null) {
+            cinemaView.showMessage("Rạp chiếu không tồn tại");
+            return;
+        }
+        String nameScreenRoom = cinemaView.getInput("Tên phòng chiếu: ");
+        ScreenRoom screenRoom = screenRoomData.get(nameScreenRoom);
+        if (screenRoom == null) {
+            cinemaView.showMessage("Phòng chiếu không tồn tại");
+            return;
+        }
+        showtime.setNameMovie(Set.of(nameMovie));
+        showtime.setStartTime(startTime);
+        showtime.setEndTime(endTime);
+        showtime.setNameCinema(Set.of(nameCinema));
+        showtime.setNameScreenRoom(Set.of(nameScreenRoom));
+        cinemaView.showMessage("Chỉnh sửa suất chiếu thành công");
+    }
+
+    private void deleteShowTimes() {
+        cinemaView.showMessage("Xóa suất chiếu");
+        String idShowtime = cinemaView.getInput("Nhập id suất chiếu muốn xóa: ");
+        Showtime showtime = showtimeData.get(idShowtime);
+        if (showtime == null) {
+            cinemaView.showMessage("Suất chiếu không tồn tại");
+            return;
+        }
+        String message = cinemaView.getInput("Bạn có chắc chắn muốn xóa suất chiếu này: ");
+        if (message.equalsIgnoreCase("Có")) {
+            showtimeData.remove(idShowtime);
+        }
+        cinemaView.showMessage("Xóa suất chiếu thành công");
+    }
+
+    private void showTicketList() {
+    }
+
+    private void addTicket() {
+        cinemaView.showMessage("Thêm vé mới");
+        String idShowtime = cinemaView.getInput("Id suất chiếu: ");
+        Showtime showtime = showtimeData.get(idShowtime);
+        if (showtime == null) {
+            cinemaView.showMessage("Suất chiếu không tồn tại");
+            return;
+        }
+        double price = Double.parseDouble(cinemaView.getInput("Nhập giá vé: " ));
+        String typeTicket = cinemaView.getInput("Nhập loại vé (Người lớn, trẻ em, sinh viên, hội viên,...): ");
+        String numberSeat = cinemaView.getInput("Nhập số ghế: ");
+        String status = cinemaView.getInput("Trạng thái: ");
+        Ticket ticket = new Ticket(UUID.randomUUID().toString(), showtime, price, typeTicket
+                , numberSeat, showtime.getStartTime(), status);
+        ticketData.put(ticket.getIdTicket(), ticket);
+        cinemaView.showMessage("Thêm vé thành công");
+    }
+
+    private void editTicket() {
+    }
+
+    private void deleteTicket() {
+    }
+
+    private void showPromotionList() {
+    }
+
+    private void addPromotion() {
+    }
+
+    private void editPromotion() {
+    }
+
+    private void deletePromotion() {
     }
 
 }

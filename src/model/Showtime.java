@@ -1,42 +1,47 @@
 package model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Showtime {
-    private String nameMovie;
-    private int duration;
+    private String idShowtime;
+    private Set<String> nameMovie;
+    private final int duration;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private String nameCinema;
-    private String nameScreenRoom;
-    private int numberOfSeats;
+    private Set<String> nameCinema;
+    private Set<String> nameScreenRoom;
+    private final int numberOfSeats;
 
-    public Showtime(String nameMovie, int duration, LocalDateTime startTime,
+
+
+    public Showtime(String idShowtime, String nameMovie, int duration, LocalDateTime startTime, LocalDateTime endTime,
                     String nameCinema, String nameScreenRoom, int numberOfSeats) {
-        this.nameMovie = nameMovie;
+        this.idShowtime = idShowtime;
+        this.nameMovie = new HashSet<>();
         this.duration = duration;
         this.startTime = startTime;
-        this.endTime = startTime.plusMinutes(duration);
-        this.nameCinema = nameCinema;
-        this.nameScreenRoom = nameScreenRoom;
+        this.endTime = endTime;
+        this.nameCinema = new HashSet<>();
+        this.nameScreenRoom = new HashSet<>();
         this.numberOfSeats = numberOfSeats;
     }
 
-    public String getNameMovie() {
+    public String getIdShowtime() {
+        return idShowtime;
+    }
+
+    public Set<String> getNameMovie() {
         return nameMovie;
     }
 
-    public void setNameMovie(String nameMovie) {
+    public void setNameMovie(Set<String> nameMovie) {
         this.nameMovie = nameMovie;
     }
 
     public int getDuration() {
         return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
     }
 
     public LocalDateTime getStartTime() {
@@ -55,27 +60,23 @@ public class Showtime {
         this.endTime = endTime;
     }
 
-    public String getNameCinema() {
+    public Set<String> getNameCinema() {
         return nameCinema;
     }
 
-    public void setNameCinema(String nameCinema) {
+    public void setNameCinema(Set<String> nameCinema) {
         this.nameCinema = nameCinema;
     }
 
-    public String getNameScreenRoom() {
+    public Set<String> getNameScreenRoom() {
         return nameScreenRoom;
     }
 
-    public void setNameScreenRoom(String nameScreenRoom) {
+    public void setNameScreenRoom(Set<String> nameScreenRoom) {
         this.nameScreenRoom = nameScreenRoom;
     }
 
     public int getNumberOfSeats() {
         return numberOfSeats;
-    }
-
-    public void setNumberOfSeats(int numberOfSeats) {
-        this.numberOfSeats = numberOfSeats;
     }
 }
