@@ -5,10 +5,7 @@ import view.CinemaView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class CinemaController {
     private final Map<String, User> userData = new HashMap<>();
@@ -46,7 +43,7 @@ public class CinemaController {
 
     private void signUpCustomer() {
         String username = cinemaView.getInput("Tên đăng nhập: ");
-        if (userData.containsKey(username) && userData.containsValue(Role.ROLE_CUSTOMER)) {
+        if (userData.containsKey(username) && userData.containsValue(Role.ROLE_USER)) {
             cinemaView.showMessage("Tên đăng nhập đã tồn tại");
             return;
         }
@@ -79,87 +76,169 @@ public class CinemaController {
     private void signIn() {
         String username = cinemaView.getInput("Tên đăng nhập: ");
         String password = cinemaView.getInput("Mật khẩu: ");
-        User admin = userData.get(username);
-        if (admin == null || !admin.getPassword().equals(password)) {
+        User user = userData.get(username);
+        if (user == null || !user.getPassword().equals(password)) {
             cinemaView.showMessage("Tên đăng nhập hoặc mật khẩu không đúng");
         }
         cinemaView.showMessage("Đăng nhập thành công");
-        if (admin.getRoles().contains(Role.ROLE_ADMIN)) {
+        if (user.getRoles().contains(Role.ROLE_ADMIN)) {
             showOptionalAdmin();
         }
     }
 
     private void showOptionalAdmin() {
         do {
-            cinemaView.showMessage("1. Hiển thị danh sách khách hàng");
-            cinemaView.showMessage("2. Hiển thị danh sách nhân viên");
-            cinemaView.showMessage("3. Thăng cấp cho nhân viên");
-            cinemaView.showMessage("4. Giáng chức quản lý");
-            cinemaView.showMessage("5. Xóa nhân viên");
-            cinemaView.showMessage("6. Hiển thị danh sách phim");
-            cinemaView.showMessage("7. Thêm phim");
-            cinemaView.showMessage("8. Sửa phim");
-            cinemaView.showMessage("9. Xóa phim");
-            cinemaView.showMessage("10. Hiển thị danh sách phòng chiếu");
-            cinemaView.showMessage("11. Thêm phòng chiếu");
-            cinemaView.showMessage("12. Sửa phòng chiếu");
-            cinemaView.showMessage("13. Xóa phòng chiếu");
-            cinemaView.showMessage("14. Hiển thị danh sách rạp chiếu");
-            cinemaView.showMessage("15. Thêm rạp chiếu");
-            cinemaView.showMessage("16. Sửa rạp chiếu");
-            cinemaView.showMessage("17. Xóa rạp chiếu");
-            cinemaView.showMessage("18. Hiển thị danh sách suất chiếu");
-            cinemaView.showMessage("19. Thêm suất chiếu");
-            cinemaView.showMessage("20. Sửa suất chiếu");
-            cinemaView.showMessage("21. Xóa suất chiếu");
-            cinemaView.showMessage("18. Hiển thị danh sách vé");
-            cinemaView.showMessage("19. Thêm vé");
-            cinemaView.showMessage("20. Sửa vé");
-            cinemaView.showMessage("21. Xóa vé");
-            cinemaView.showMessage("18. Hiển thị danh sách khuyến mãi");
-            cinemaView.showMessage("19. Thêm khuyến mãi");
-            cinemaView.showMessage("20. Sửa khuyến mãi");
-            cinemaView.showMessage("21. Xóa khuyến mãi");
-            cinemaView.showMessage("50. Đăng xuất");
+            cinemaView.showMessage("1. Khách hàng");
+            cinemaView.showMessage("2. Nhân viên");
+            cinemaView.showMessage("3. Phim");
+            cinemaView.showMessage("4. Phòng chiếu");
+            cinemaView.showMessage("5. Rạp chiếu");
+            cinemaView.showMessage("6. Suất chiếu");
+            cinemaView.showMessage("7. Khuyến mãi");
+            cinemaView.showMessage("8. Đặt vé");
+            cinemaView.showMessage("9. Đăng xuất");
 
             String choice = cinemaView.getInput("Sự lựa chọn của bạn là: ");
             switch (choice) {
-                case "1"  -> showCustomerList();
-                case "2"  -> showEmployeeList();
-                case "3"  -> promoteEmployee();
-                case "4"  -> demoteEmployee();
-                case "5"  -> deleteEmployee();
-                case "6"  -> showMovieList();
-                case "7"  -> addMovie();
-                case "8"  -> editMovie();
-                case "9"  -> deleteMovie();
-                case "10"  -> showScreenRoomList();
-                case "11" -> addScreenRoom();
-                case "12" -> editScreenRoom();
-                case "13" -> deleteScreenRoom();
-                case "14"  -> showCinemaList();
-                case "15" -> addCinema();
-                case "16" -> editCinema();
-                case "17" -> deleteCinema();
-                case "18"  -> showListShowTimes();
-                case "19" -> addShowTimes();
-                case "20" -> editShowTimes();
-                case "21" -> deleteShowTimes();
-                case "22"  -> showTicketList();
-                case "23" -> addTicket();
-                case "24" -> editTicket();
-                case "25" -> deleteTicket();
-                case "26"  -> showPromotionList();
-                case "27" -> addPromotion();
-                case "28" -> editPromotion();
-                case "29" -> deletePromotion();
-                case "50" -> {return;}
+                case "1" -> showOptionalCustomer();
+                case "2" -> showOptionalEmployee();
+                case "3" -> showOptionalMovie();
+                case "4" -> showOptionalScreenRoom();
+                case "5" -> showOptionalCinema();
+                case "6" -> showOptionalShowtime();
+                case "7" -> showOptionalPromotion();
+                case "8" -> bookTicket();
+                case "9" -> {return;}
             }
         }while (true);
     }
 
+    private void showOptionalCustomer() {
+        cinemaView.showMessage("Khách hàng");
+        do {
+            cinemaView.showMessage("1. Hiển thị danh sách khách hàng");
+            cinemaView.showMessage("2. Quay lại");
+            String choice = cinemaView.getInput("Sự lựa chọn của bạn là: ");
+            switch (choice) {
+                case "1" -> showCustomerList();
+                case "2" -> {return;}
+            }
+        }while (true);
+    }
 
+    private void showOptionalEmployee() {
+        cinemaView.showMessage("Nhân viên/Quản lý");
+        do {
+            cinemaView.showMessage("1. Hiển thị danh sách nhân viên");
+            cinemaView.showMessage("2. Thăng cấp cho nhân viên");
+            cinemaView.showMessage("3. Giáng chức quản lý");
+            cinemaView.showMessage("4. Xóa nhân viên");
+            cinemaView.showMessage("5. Quay lại");
+            String choice = cinemaView.getInput("Sự lựa chọn của bạn là: ");
+            switch (choice) {
+                case "1" -> showEmployeeList();
+                case "2" -> promoteEmployee();
+                case "3" -> demoteEmployee();
+                case "4" -> deleteEmployee();
+                case "5" -> {return;}
+            }
+        }while (true);
+    }
 
+    private void showOptionalMovie() {
+        cinemaView.showMessage("Phim");
+        do {
+            cinemaView.showMessage("1. Hiển thị danh sách phim");
+            cinemaView.showMessage("2. Thêm phim");
+            cinemaView.showMessage("3. Chỉnh sửa phim");
+            cinemaView.showMessage("4. Xóa phim");
+            cinemaView.showMessage("5. Quay lại");
+            String choice = cinemaView.getInput("Sự lựa chọn của bạn là: ");
+            switch (choice) {
+                case "1" -> showMovieList();
+                case "2" -> addMovie();
+                case "3" -> editMovie();
+                case "4" -> deleteMovie();
+                case "5" -> {return;}
+            }
+        }while (true);
+    }
+
+    private void showOptionalScreenRoom() {
+        cinemaView.showMessage("Phòng chiếu");
+        do {
+            cinemaView.showMessage("1. Hiển thị danh sách phòng chiếu");
+            cinemaView.showMessage("2. Thêm phòng chiếu");
+            cinemaView.showMessage("3. Chỉnh sửa phòng chiếu");
+            cinemaView.showMessage("4. Xóa phòng chiếu");
+            cinemaView.showMessage("5. Quay lại");
+            String choice = cinemaView.getInput("Sự lựa chọn của bạn là: ");
+            switch (choice) {
+                case "1" -> showScreenRoomList();
+                case "2" -> addScreenRoom();
+                case "3" -> editScreenRoom();
+                case "4" -> deleteScreenRoom();
+                case "5" -> {return;}
+            }
+        }while (true);
+    }
+
+    private void showOptionalCinema() {
+        cinemaView.showMessage("Rạp chiếu");
+        do {
+            cinemaView.showMessage("1. Hiển thị danh sách rạp chiếu");
+            cinemaView.showMessage("2. Thêm rạp chiếu");
+            cinemaView.showMessage("3. Chỉnh sửa rạp chiếu");
+            cinemaView.showMessage("4. Xóa rạp chiếu");
+            cinemaView.showMessage("5. Quay lại");
+            String choice = cinemaView.getInput("Sự lựa chọn của bạn là: ");
+            switch (choice) {
+                case "1" -> showCinemaList();
+                case "2" -> addCinema();
+                case "3" -> editCinema();
+                case "4" -> deleteCinema();
+                case "5" -> {return;}
+            }
+        }while (true);
+    }
+
+    private void showOptionalShowtime() {
+        cinemaView.showMessage("Suất chiếu");
+        do {
+            cinemaView.showMessage("1. Hiển thị danh sách suất chiếu");
+            cinemaView.showMessage("2. Thêm suất chiếu");
+            cinemaView.showMessage("3. Chỉnh sửa suất chiếu");
+            cinemaView.showMessage("4. Xóa suất chiếu");
+            cinemaView.showMessage("5. Quay lại");
+            String choice = cinemaView.getInput("Sự lựa chọn của bạn là: ");
+            switch (choice) {
+                case "1" -> showListShowTimes();
+                case "2" -> addShowTimes();
+                case "3" -> editShowTimes();
+                case "4" -> deleteShowTimes();
+                case "5" -> {return;}
+            }
+        }while (true);
+    }
+
+    private void showOptionalPromotion() {
+        cinemaView.showMessage("Khuyến mãi");
+        do {
+            cinemaView.showMessage("1. Hiển thị danh sách khuyến mãi");
+            cinemaView.showMessage("2. Thêm khuyến mãi");
+            cinemaView.showMessage("3. Chỉnh sửa khuyến mãi");
+            cinemaView.showMessage("4. Xóa khuyến mãi");
+            cinemaView.showMessage("5. Quay lại");
+            String choice = cinemaView.getInput("Sự lựa chọn của bạn là: ");
+            switch (choice) {
+                case "1" -> showPromotionList();
+                case "2" -> addPromotion();
+                case "3" -> editPromotion();
+                case "4" -> deletePromotion();
+                case "5" -> {return;}
+            }
+        }while (true);
+    }
 
     private void showCustomerList() {
         cinemaView.showMessage("Danh sách khách hàng");
@@ -468,43 +547,107 @@ public class CinemaController {
         cinemaView.showMessage("Xóa suất chiếu thành công");
     }
 
-    private void showTicketList() {
+    private void showPromotionList() {
+        cinemaView.showMessage("Danh sách khuyến mãi");
+        for (Promotion promotion : promotionData.values()) {
+            cinemaView.showDetailPromotion(promotion);
+        }
     }
 
-    private void addTicket() {
-        cinemaView.showMessage("Thêm vé mới");
+    private void addPromotion() {
+        cinemaView.showMessage("Thêm mã khuyến mãi");
+        String codePromotion = cinemaView.getInput("Mã khuyến mãi: ");
+        String namePromotion = cinemaView.getInput("Tên khuyến mãi: ");
+        String desc = cinemaView.getInput("Mô tả: ");
+        double discountAmount = Double.parseDouble(cinemaView.getInput("Số tiền giảm: "));
+        int amountPromotion = Integer.parseInt(cinemaView.getInput("Số lượng: "));
+        Promotion promotion = new Promotion(codePromotion, namePromotion, desc, discountAmount, amountPromotion);
+        promotionData.put(codePromotion, promotion);
+        cinemaView.showMessage("Thêm mã khuyến mãi thành công");
+    }
+
+    private void editPromotion() {
+        cinemaView.showMessage("Chỉnh sửa mã khuyến mãi");
+        String codePromotion = cinemaView.getInput("Mã khuyến mãi: ");
+        Promotion promotion = promotionData.get(codePromotion);
+        if (promotion == null) {
+            cinemaView.showMessage("Mã khuyến mãi không tồn tại");
+            return;
+        }
+        String namePromotion = cinemaView.getInput("Tên khuyến mãi: ");
+        String desc = cinemaView.getInput("Mô tả: ");
+        double discountAmount = Double.parseDouble(cinemaView.getInput("Số tiền giảm: "));
+        int amountPromotion = Integer.parseInt(cinemaView.getInput("Số lượng: "));
+        promotion.setNamePromotion(namePromotion);
+        promotion.setDesc(desc);
+        promotion.setDiscountAmount(discountAmount);
+        promotion.setAmount(amountPromotion);
+        cinemaView.showMessage("Chỉnh sửa mã khuyến mãi thành công");
+    }
+
+    private void deletePromotion() {
+        cinemaView.showMessage("Xóa mã khuyến mãi");
+        String codePromotion = cinemaView.getInput("Mã khuyến mãi: ");
+//        Promotion promotion = promotionData.get(codePromotion);
+//        if (promotion == null) {
+//            cinemaView.showMessage("Mã khuyến mãi không tồn tại");
+//            return;
+//        }
+        if (promotionData.containsKey(codePromotion)) {
+            String message = cinemaView.getInput("Bạn có chắc chắn muốn xóa: ");
+            if (message.equalsIgnoreCase("Có")) {
+                promotionData.remove(codePromotion);
+            }
+            cinemaView.showMessage("Xóa mã khuyến mãi thành công");
+        }
+        cinemaView.showMessage("Mã khuyến mãi không tồn tại");
+    }
+
+    private void bookTicket() {
+        cinemaView.showMessage("Đặt vé xem phim");
         String idShowtime = cinemaView.getInput("Id suất chiếu: ");
         Showtime showtime = showtimeData.get(idShowtime);
         if (showtime == null) {
             cinemaView.showMessage("Suất chiếu không tồn tại");
             return;
         }
-        double price = Double.parseDouble(cinemaView.getInput("Nhập giá vé: " ));
-        String typeTicket = cinemaView.getInput("Nhập loại vé (Người lớn, trẻ em, sinh viên, hội viên,...): ");
-        String numberSeat = cinemaView.getInput("Nhập số ghế: ");
-        String status = cinemaView.getInput("Trạng thái: ");
-        Ticket ticket = new Ticket(UUID.randomUUID().toString(), showtime, price, typeTicket
-                , numberSeat, showtime.getStartTime(), status);
+        double price = 85.0;
+        String typeTicked = cinemaView.getInput("Loại vé: ");
+        String numberSeat = cinemaView.getInput("Số ghế: ");
+        if (ticketData.containsKey(numberSeat)) {
+            cinemaView.showMessage("Ghế đã được đặt");
+            return;
+        }
+        StatusTicket statusTicket = StatusTicket.RESERVED;
+        Set<String> promotions = new HashSet<>();
+        String messagePromotion = cinemaView.getInput("Bạn có muốn thêm mã khuyến mãi: ");
+        double totalDiscount = 0;
+        while (messagePromotion.equalsIgnoreCase("Có")) {
+            String codePromotion = cinemaView.getInput("Mã khuyến mãi: ");
+            Promotion promotion = promotionData.get(codePromotion);
+            if (promotion != null) {
+                if (promotion.getAmount() > 0) {
+                    promotions.add(codePromotion);
+                    totalDiscount += promotion.getDiscountAmount();
+                    promotion.decreaseAmountPromotion();
+                    cinemaView.showMessage("Thêm mã khuyến mãi thành công");
+                } else {
+                    cinemaView.showMessage("Số lượng mã đã hết");
+                }
+            } else {
+                cinemaView.showMessage("Mã khuyến mãi không tồn tại");
+            }
+            messagePromotion = cinemaView.getInput("Bạn có muốn thêm mã khuyến mãi: ");
+        }
+        double totalPrice = Math.max(price - totalDiscount, 0);
+        cinemaView.showMessage("Tổng số tiền thanh toán: " + totalPrice);
+        Ticket ticket = new Ticket(UUID.randomUUID().toString(),
+                idShowtime, totalPrice, typeTicked, numberSeat, showtime.getStartTime(), statusTicket, promotions);
+        String messagePay = cinemaView.getInput("Bạn có muốn thanh toán: ");
+        if (messagePay.equalsIgnoreCase("Có")) {
+            ticket.setStatus(StatusTicket.PAID);
+        }
         ticketData.put(ticket.getIdTicket(), ticket);
-        cinemaView.showMessage("Thêm vé thành công");
+        cinemaView.showMessage("Đặt vé thành công");
     }
-
-    private void editTicket() {
-    }
-
-    private void deleteTicket() {
-    }
-
-    private void showPromotionList() {
-    }
-
-    private void addPromotion() {
-    }
-
-    private void editPromotion() {
-    }
-
-    private void deletePromotion() {
-    }
-
 }

@@ -1,29 +1,29 @@
 package model;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 public class Ticket {
     private String idTicket;
-    private Showtime showtime;
+    private String idShowtime;
     private double price;
     private String typeTicket;
     private String numberSeat;
     private LocalDateTime startTime;
-    private String status;
-    private Set<Promotion> promotions;
+    private StatusTicket status;
+    private Set<String> promotions;
+    private LocalDateTime cancelTicketTime;
 
-    public Ticket(String idTicket, Showtime showtime, double price, String typeTicket,
-                  String numberSeat, LocalDateTime startTime, String status) {
+    public Ticket(String idTicket, String idShowtime, double price, String typeTicket,
+                  String numberSeat, LocalDateTime startTime, StatusTicket status, Set<String> promotions) {
         this.idTicket = idTicket;
-        this.showtime = showtime;
+        this.idShowtime = idShowtime;
         this.price = price;
         this.typeTicket = typeTicket;
         this.numberSeat = numberSeat;
         this.startTime = startTime;
         this.status = status;
-        this.promotions = new HashSet<>();
+        this.promotions = promotions;
     }
 
     public String getIdTicket() {
@@ -34,12 +34,12 @@ public class Ticket {
         this.idTicket = idTicket;
     }
 
-    public Showtime getShowtime() {
-        return showtime;
+    public String getIdShowtime() {
+        return idShowtime;
     }
 
-    public void setShowtime(Showtime showtime) {
-        this.showtime = showtime;
+    public void setIdShowtime(String idShowtime) {
+        this.idShowtime = idShowtime;
     }
 
     public double getPrice() {
@@ -74,19 +74,27 @@ public class Ticket {
         this.startTime = startTime;
     }
 
-    public String getStatus() {
+    public StatusTicket getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusTicket status) {
         this.status = status;
     }
 
-    public Set<Promotion> getPromotionals() {
+    public Set<String> getPromotionals() {
         return promotions;
     }
 
-    public void setPromotionals(Set<Promotion> promotions) {
+    public void setPromotionals(Set<String> promotions) {
         this.promotions = promotions;
+    }
+
+    public LocalDateTime getCancelTicketTime() {
+        return cancelTicketTime;
+    }
+
+    public void setCancelTicketTime(LocalDateTime cancelTicketTime) {
+        this.cancelTicketTime = cancelTicketTime;
     }
 }

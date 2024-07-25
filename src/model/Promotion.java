@@ -1,24 +1,26 @@
 package model;
 
 public class Promotion {
-    private String idPromotion;
+    private String codePromotion;
     private String namePromotion;
     private String desc;
     private double discountAmount;
+    private int amount;
 
-    public Promotion(String idPromotion, String namePromotion, String desc, double discountAmount) {
-        this.idPromotion = idPromotion;
+    public Promotion(String codePromotion, String namePromotion, String desc, double discountAmount, int amount) {
+        this.codePromotion = codePromotion;
         this.namePromotion = namePromotion;
         this.desc = desc;
         this.discountAmount = discountAmount;
+        this.amount = amount;
     }
 
-    public String getIdPromotion() {
-        return idPromotion;
+    public String getCodePromotion() {
+        return codePromotion;
     }
 
-    public void setIdPromotion(String idPromotion) {
-        this.idPromotion = idPromotion;
+    public void setCodePromotion(String codePromotion) {
+        this.codePromotion = codePromotion;
     }
 
     public String getNamePromotion() {
@@ -43,5 +45,19 @@ public class Promotion {
 
     public void setDiscountAmount(double discountAmount) {
         this.discountAmount = discountAmount;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void decreaseAmountPromotion() {
+        if (amount > 0) {
+            amount--;
+        }
     }
 }

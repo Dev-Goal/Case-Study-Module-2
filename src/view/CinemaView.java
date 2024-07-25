@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class CinemaView {
     private final Scanner scanner = new Scanner(System.in);
 
-    public void showMenuHome() {
+    public static void showMenuHome() {
         System.out.print("""
                 Chào mừng đến với Cinema\s
                 1. Đăng nhập\s
@@ -62,5 +62,14 @@ public class CinemaView {
         System.out.println("Bắt đầu lúc: " + showtime.getStartTime());
         System.out.println("Kết thức lúc: " + showtime.getEndTime());
         System.out.println("Số ghế: " + showtime.getNumberOfSeats());
+    }
+
+
+    public void showDetailPromotion(Promotion promotion) {
+        System.out.println("Mã khuyến mãi: " + promotion.getCodePromotion());
+        System.out.println("Tên khuyến mãi: " + promotion.getNamePromotion());
+        System.out.println("Mô tả: " + promotion.getDesc());
+        System.out.println("Giảm giá: " + promotion.getDiscountAmount());
+        System.out.println("Số lượng: " + promotion.getAmount());
     }
 }

@@ -7,12 +7,12 @@ import java.util.Set;
 public class Showtime {
     private String idShowtime;
     private Set<String> nameMovie;
-    private final int duration;
+    private int duration;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Set<String> nameCinema;
     private Set<String> nameScreenRoom;
-    private final int numberOfSeats;
+    private int numberOfSeats;
 
 
 
