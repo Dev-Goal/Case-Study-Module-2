@@ -32,6 +32,7 @@ public class CinemaView {
     }
 
     public void showDetailMovie(Movie movie) {
+        System.out.println("ID phim: " + movie.getIdMovie());
         System.out.println("Tên phim: " + movie.getNameMovie());
         System.out.println("Thể loại: " + movie.getGenreMovie());
         System.out.println("Thời lượng: " + movie.getDuration() + " phút");
@@ -44,13 +45,11 @@ public class CinemaView {
     public void showDetailScreenRoom(ScreenRoom screenRoom) {
         System.out.println("Tên phòng chiếu: " + screenRoom.getNameScreenRoom());
         System.out.println("Số ghế: " + screenRoom.getTotalSeats());
-        System.out.println("Danh sách suất chiếu: " + screenRoom.getShowtimes());
     }
 
     public void showDetailCinema(Cinema cinema) {
         System.out.println("Tên rạp chiếu: " + cinema.getNameCinema());
         System.out.println("Số phòng: " + cinema.getNumberOfScreenRoom());
-        System.out.println("Danh sách phòng chiếu: " + cinema.getNameScreenRoom());
     }
 
     public void showDetailShowTime(Showtime showtime) {
@@ -70,4 +69,15 @@ public class CinemaView {
         System.out.println("Giảm giá: " + promotion.getDiscountAmount());
         System.out.println("Số lượng: " + promotion.getAmount());
     }
+
+    public void showDetailTicket(Ticket ticket, Movie movie, ScreenRoom screenRoom, Showtime showtime) {
+        showMessage("Thông tin vé: " + ticket.getIdTicket());
+        showMessage("Tên phim: " + movie.getNameMovie());
+        showMessage("Tên phòng chiếu: " + screenRoom.getNameScreenRoom());
+        showMessage("Thời gian bắt đầu: " + showtime.getStartTime());
+        showMessage("Thời lượng: " + movie.getDuration());
+        showMessage("Trạng thái: " + ticket.getStatus());
+        showMessage("---------------------------------------------");
+    }
+
 }

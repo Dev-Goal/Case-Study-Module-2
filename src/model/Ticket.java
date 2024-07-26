@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 public class Ticket {
-    private String idTicket;
-    private String idShowtime;
+    private int idTicket;
+    private int idShowtime;
+    private int idMovie;
+    private int idScreenRoom;
     private double price;
     private String typeTicket;
     private String numberSeat;
@@ -13,10 +15,12 @@ public class Ticket {
     private StatusTicket status;
     private Set<String> promotions;
 
-    public Ticket(String idTicket, String idShowtime, double price, String typeTicket,
+    public Ticket(int idTicket, int idShowtime, int idMovie, int idScreenRoom, double price, String typeTicket,
                   String numberSeat, LocalDateTime startTime, StatusTicket status, Set<String> promotions) {
         this.idTicket = idTicket;
         this.idShowtime = idShowtime;
+        this.idMovie = idMovie;
+        this.idScreenRoom = idScreenRoom;
         this.price = price;
         this.typeTicket = typeTicket;
         this.numberSeat = numberSeat;
@@ -25,20 +29,36 @@ public class Ticket {
         this.promotions = promotions;
     }
 
-    public String getIdTicket() {
+    public int getIdTicket() {
         return idTicket;
     }
 
-    public void setIdTicket(String idTicket) {
+    public void setIdTicket(int idTicket) {
         this.idTicket = idTicket;
     }
 
-    public String getIdShowtime() {
+    public int getIdShowtime() {
         return idShowtime;
     }
 
-    public void setIdShowtime(String idShowtime) {
+    public void setIdShowtime(int idShowtime) {
         this.idShowtime = idShowtime;
+    }
+
+    public int getIdMovie() {
+        return idMovie;
+    }
+
+    public void setIdMovie(int idMovie) {
+        this.idMovie = idMovie;
+    }
+
+    public int getIdScreenRoom() {
+        return idScreenRoom;
+    }
+
+    public void setIdScreenRoom(int idScreenRoom) {
+        this.idScreenRoom = idScreenRoom;
     }
 
     public double getPrice() {
@@ -81,12 +101,11 @@ public class Ticket {
         this.status = status;
     }
 
-    public Set<String> getPromotionals() {
+    public Set<String> getPromotions() {
         return promotions;
     }
 
-    public void setPromotionals(Set<String> promotions) {
+    public void setPromotions(Set<String> promotions) {
         this.promotions = promotions;
     }
-
 }

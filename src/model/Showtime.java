@@ -5,17 +5,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Showtime {
-    private String idShowtime;
-    private Set<String> idMovie;
+    private int idShowtime;
+    private Set<Integer> idMovie;
     private int duration;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Set<String> idScreenRoom;
+    private Set<Integer> idScreenRoom;
     private int availableSeats;
 
 
 
-    public Showtime(String idShowtime, String idMovie, int duration, LocalDateTime startTime, LocalDateTime endTime,
+    public Showtime(int idShowtime, Integer idMovie, int duration, LocalDateTime startTime, LocalDateTime endTime,
                     String idScreenRoom, int availableSeats) {
         this.idShowtime = idShowtime;
         this.idMovie = new HashSet<>();
@@ -26,15 +26,15 @@ public class Showtime {
         this.availableSeats = availableSeats;
     }
 
-    public String getIdShowtime() {
+    public int getIdShowtime() {
         return idShowtime;
     }
 
-    public Set<String> getIdMovie() {
+    public Set<Integer> getIdMovie() {
         return idMovie;
     }
 
-    public void setIdMovie(Set<String> idMovie) {
+    public void setIdMovie(Set<Integer> idMovie) {
         this.idMovie = idMovie;
     }
 
@@ -58,11 +58,11 @@ public class Showtime {
         this.endTime = endTime;
     }
 
-    public Set<String> getIdScreenRoom() {
+    public Set<Integer> getIdScreenRoom() {
         return idScreenRoom;
     }
 
-    public void setIdScreenRoom(Set<String> idScreenRoom) {
+    public void setIdScreenRoom(Set<Integer> idScreenRoom) {
         this.idScreenRoom = idScreenRoom;
     }
 

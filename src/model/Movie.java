@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Movie {
+    private int idMovie;
     private String nameMovie;
     private String genreMovie;
     private int duration;
@@ -12,7 +13,8 @@ public class Movie {
     private String desc;
     private Set<Showtime> showtimes;
 
-    public Movie(String nameMovie, String genreMovie, int duration, String image, String trailer, String desc) {
+    public Movie(int idMovie, String nameMovie, String genreMovie, int duration, String image, String trailer, String desc) {
+        this.idMovie = idMovie;
         this.nameMovie = nameMovie;
         this.genreMovie = genreMovie;
         this.duration = duration;
@@ -20,6 +22,14 @@ public class Movie {
         this.trailer = trailer;
         this.desc = desc;
         this.showtimes = new HashSet<>();
+    }
+
+    public int getIdMovie() {
+        return idMovie;
+    }
+
+    public void setIdMovie(int idMovie) {
+        this.idMovie = idMovie;
     }
 
     public String getNameMovie() {
