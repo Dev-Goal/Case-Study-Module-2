@@ -7,12 +7,10 @@ public class Cinema {
     private String nameCinema;
     private int numberOfScreenRoom;
     private Set<ScreenRoom> nameScreenRoom;
-    private Set<Showtime> showtimes;
 
     public Cinema(String nameCinema, int numberOfScreenRoom) {
         this.nameCinema = nameCinema;
         this.numberOfScreenRoom = numberOfScreenRoom;
-        this.showtimes = new HashSet<>();
         this.nameScreenRoom = new HashSet<>();
     }
 
@@ -34,9 +32,5 @@ public class Cinema {
 
     public Set<ScreenRoom> getNameScreenRoom() {
         return nameScreenRoom;
-    }
-
-    public Set<Showtime> getShowtimes() {
-        return showtimes;
     }
 }

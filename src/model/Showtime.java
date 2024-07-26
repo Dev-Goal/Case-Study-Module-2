@@ -6,38 +6,36 @@ import java.util.Set;
 
 public class Showtime {
     private String idShowtime;
-    private Set<String> nameMovie;
+    private Set<String> idMovie;
     private int duration;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Set<String> nameCinema;
-    private Set<String> nameScreenRoom;
-    private int numberOfSeats;
+    private Set<String> idScreenRoom;
+    private int availableSeats;
 
 
 
-    public Showtime(String idShowtime, String nameMovie, int duration, LocalDateTime startTime, LocalDateTime endTime,
-                    String nameCinema, String nameScreenRoom, int numberOfSeats) {
+    public Showtime(String idShowtime, String idMovie, int duration, LocalDateTime startTime, LocalDateTime endTime,
+                    String idScreenRoom, int availableSeats) {
         this.idShowtime = idShowtime;
-        this.nameMovie = new HashSet<>();
+        this.idMovie = new HashSet<>();
         this.duration = duration;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.nameCinema = new HashSet<>();
-        this.nameScreenRoom = new HashSet<>();
-        this.numberOfSeats = numberOfSeats;
+        this.idScreenRoom = new HashSet<>();
+        this.availableSeats = availableSeats;
     }
 
     public String getIdShowtime() {
         return idShowtime;
     }
 
-    public Set<String> getNameMovie() {
-        return nameMovie;
+    public Set<String> getIdMovie() {
+        return idMovie;
     }
 
-    public void setNameMovie(Set<String> nameMovie) {
-        this.nameMovie = nameMovie;
+    public void setIdMovie(Set<String> idMovie) {
+        this.idMovie = idMovie;
     }
 
     public int getDuration() {
@@ -60,23 +58,28 @@ public class Showtime {
         this.endTime = endTime;
     }
 
-    public Set<String> getNameCinema() {
-        return nameCinema;
+    public Set<String> getIdScreenRoom() {
+        return idScreenRoom;
     }
 
-    public void setNameCinema(Set<String> nameCinema) {
-        this.nameCinema = nameCinema;
+    public void setIdScreenRoom(Set<String> idScreenRoom) {
+        this.idScreenRoom = idScreenRoom;
     }
 
-    public Set<String> getNameScreenRoom() {
-        return nameScreenRoom;
+    public int getAvailableSeats() {
+        return availableSeats;
     }
 
-    public void setNameScreenRoom(Set<String> nameScreenRoom) {
-        this.nameScreenRoom = nameScreenRoom;
+    public void setAvailableSeats(int availableSeats) {
+        this.availableSeats = availableSeats;
     }
 
-    public int getNumberOfSeats() {
-        return numberOfSeats;
+    public void decreaseSeats(int numberOfSeats) {
+        if (availableSeats >= numberOfSeats) {
+            availableSeats -= numberOfSeats;
+        } else {
+            throw new IllegalArgumentException("Đã hết ghế");
+        }
     }
+
 }

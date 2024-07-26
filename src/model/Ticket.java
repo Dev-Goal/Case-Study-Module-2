@@ -12,7 +12,6 @@ public class Ticket {
     private LocalDateTime startTime;
     private StatusTicket status;
     private Set<String> promotions;
-    private LocalDateTime cancelTicketTime;
 
     public Ticket(String idTicket, String idShowtime, double price, String typeTicket,
                   String numberSeat, LocalDateTime startTime, StatusTicket status, Set<String> promotions) {
@@ -90,11 +89,4 @@ public class Ticket {
         this.promotions = promotions;
     }
 
-    public LocalDateTime getCancelTicketTime() {
-        return cancelTicketTime;
-    }
-
-    public void setCancelTicketTime(LocalDateTime cancelTicketTime) {
-        this.cancelTicketTime = cancelTicketTime;
-    }
 }
