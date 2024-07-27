@@ -5,36 +5,36 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Showtime {
-    private int idShowtime;
-    private Set<Integer> idMovie;
+    private String idShowtime;
+    private Set<String> idMovie;
     private int duration;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Set<Integer> idScreenRoom;
+    private Set<String> nameScreenRoom;
     private int availableSeats;
 
 
 
-    public Showtime(int idShowtime, Integer idMovie, int duration, LocalDateTime startTime, LocalDateTime endTime,
-                    String idScreenRoom, int availableSeats) {
+    public Showtime(String idShowtime, String idMovie, int duration, LocalDateTime startTime, LocalDateTime endTime,
+                    String nameScreenRoom, int availableSeats) {
         this.idShowtime = idShowtime;
         this.idMovie = new HashSet<>();
         this.duration = duration;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.idScreenRoom = new HashSet<>();
+        this.nameScreenRoom = new HashSet<>();
         this.availableSeats = availableSeats;
     }
 
-    public int getIdShowtime() {
+    public String getIdShowtime() {
         return idShowtime;
     }
 
-    public Set<Integer> getIdMovie() {
+    public Set<String> getIdMovie() {
         return idMovie;
     }
 
-    public void setIdMovie(Set<Integer> idMovie) {
+    public void setIdMovie(Set<String> idMovie) {
         this.idMovie = idMovie;
     }
 
@@ -58,12 +58,12 @@ public class Showtime {
         this.endTime = endTime;
     }
 
-    public Set<Integer> getIdScreenRoom() {
-        return idScreenRoom;
+    public Set<String> getNameScreenRoom() {
+        return nameScreenRoom;
     }
 
-    public void setIdScreenRoom(Set<Integer> idScreenRoom) {
-        this.idScreenRoom = idScreenRoom;
+    public void setNameScreenRoom(Set<String> nameScreenRoom) {
+        this.nameScreenRoom = nameScreenRoom;
     }
 
     public int getAvailableSeats() {

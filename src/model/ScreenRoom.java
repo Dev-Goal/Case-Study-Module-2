@@ -4,24 +4,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ScreenRoom {
-    private int idScreenRoom;
+    private String idScreenRoom;
     private String nameScreenRoom;
     private int totalSeats;
     private Set<Showtime> showtimes;
 
-    public ScreenRoom(int idScreenRoom, String nameScreenRoom, int totalSeats) {
+    public ScreenRoom(String idScreenRoom, String nameScreenRoom, int totalSeats) {
         this.idScreenRoom = idScreenRoom;
         this.nameScreenRoom = nameScreenRoom;
         this.totalSeats = totalSeats;
         this.showtimes = new HashSet<>();
     }
 
-    public int getIdScreenRoom() {
+    public String getIdScreenRoom() {
         return idScreenRoom;
-    }
-
-    public void setIdScreenRoom(int idScreenRoom) {
-        this.idScreenRoom = idScreenRoom;
     }
 
     public String getNameScreenRoom() {

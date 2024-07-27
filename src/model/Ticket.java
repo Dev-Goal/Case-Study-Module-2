@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 public class Ticket {
-    private int idTicket;
-    private int idShowtime;
-    private int idMovie;
-    private int idScreenRoom;
+    private String idTicket;
+    private String idShowtime;
+    private String idMovie;
+    private String idScreenRoom;
     private double price;
     private String typeTicket;
     private String numberSeat;
@@ -15,7 +15,7 @@ public class Ticket {
     private StatusTicket status;
     private Set<String> promotions;
 
-    public Ticket(int idTicket, int idShowtime, int idMovie, int idScreenRoom, double price, String typeTicket,
+    public Ticket(String idTicket, String idShowtime, String idMovie, String idScreenRoom, double price, String typeTicket,
                   String numberSeat, LocalDateTime startTime, StatusTicket status, Set<String> promotions) {
         this.idTicket = idTicket;
         this.idShowtime = idShowtime;
@@ -29,35 +29,31 @@ public class Ticket {
         this.promotions = promotions;
     }
 
-    public int getIdTicket() {
+    public String getIdTicket() {
         return idTicket;
     }
 
-    public void setIdTicket(int idTicket) {
-        this.idTicket = idTicket;
-    }
-
-    public int getIdShowtime() {
+    public String getIdShowtime() {
         return idShowtime;
     }
 
-    public void setIdShowtime(int idShowtime) {
+    public void setIdShowtime(String idShowtime) {
         this.idShowtime = idShowtime;
     }
 
-    public int getIdMovie() {
+    public String getIdMovie() {
         return idMovie;
     }
 
-    public void setIdMovie(int idMovie) {
+    public void setIdMovie(String idMovie) {
         this.idMovie = idMovie;
     }
 
-    public int getIdScreenRoom() {
+    public String getIdScreenRoom() {
         return idScreenRoom;
     }
 
-    public void setIdScreenRoom(int idScreenRoom) {
+    public void setIdScreenRoom(String idScreenRoom) {
         this.idScreenRoom = idScreenRoom;
     }
 

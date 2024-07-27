@@ -1,9 +1,9 @@
-import controller.CinemaController;
+import controller.CinemaHome;
 
 public class Main {
     public static void main(String[] args) {
-        CinemaController cinemaController = new CinemaController();
-        cinemaController.start();
+        CinemaHome cinemaHome = new CinemaHome();
+        cinemaHome.start();
     }
 
 }
