@@ -39,4 +39,8 @@ public class Cinema {
     public Set<ScreenRoom> getNameScreenRoom() {
         return nameScreenRoom;
     }
+
+    public void addScreenRoom(ScreenRoom screenRoom) {
+        nameScreenRoom.add(screenRoom);
+    }
 }

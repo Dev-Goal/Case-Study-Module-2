@@ -2,10 +2,15 @@ package view;
 
 import model.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class CinemaView {
     private Scanner scanner = new Scanner(System.in);
+    private Map<String, ScreenRoom> screenRoomData = new HashMap<>();
+    private Map<String, Cinema> cinemaData = new HashMap<>();
 
     public static void showMenuHome() {
         System.out.print("""
@@ -44,12 +49,11 @@ public class CinemaView {
 
     public void showDetailScreenRoom(ScreenRoom screenRoom) {
         System.out.println("Tên phòng chiếu: " + screenRoom.getNameScreenRoom());
-        System.out.println("Số ghế: " + screenRoom.getTotalSeats());
+        System.out.println("Số lượng ghế: " + screenRoom.getTotalSeats());
     }
 
     public void showDetailCinema(Cinema cinema) {
-        System.out.println("Tên rạp chiếu: " + cinema.getNameCinema());
-        System.out.println("Số phòng: " + cinema.getNumberOfScreenRoom());
+        System.out.println("Tên rạp chiếu: " + cinema.getNameCinema() + " - Số lượng phòng: " + cinema.getNumberOfScreenRoom());
     }
 
     public void showDetailShowTime(Showtime showtime) {

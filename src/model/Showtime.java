@@ -13,8 +13,6 @@ public class Showtime {
     private Set<String> nameScreenRoom;
     private int availableSeats;
 
-
-
     public Showtime(String idShowtime, String idMovie, int duration, LocalDateTime startTime, LocalDateTime endTime,
                     String nameScreenRoom, int availableSeats) {
         this.idShowtime = idShowtime;

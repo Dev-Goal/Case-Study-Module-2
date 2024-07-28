@@ -1,18 +1,17 @@
-package controller.movie;
+package controller.moviecontroller;
 
 import model.Movie;
 import service.CinemeService;
 import view.CinemaView;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class MovieController {
     private CinemaView cinemaView = new CinemaView();
     private CinemeService cinemeService = new CinemeService();
-    private Map<String, Movie> movieData = new HashMap<>();
-    private static final String MOVIE_FILE_PATH = "src/controller/movie/movie.csv";
+    private Map<String, Movie> movieData;
+    private static final String MOVIE_FILE_PATH = "src/controller/moviecontroller/movie.csv";
 
     public MovieController() {
         this.movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);

@@ -1,6 +1,7 @@
-package controller;
+package controller.cinemacontroller;
 
 import model.Cinema;
+import model.ScreenRoom;
 import service.CinemeService;
 import view.CinemaView;
 
@@ -11,7 +12,12 @@ import java.util.Objects;
 public class CinemaController {
     private CinemaView cinemaView = new CinemaView();
     private CinemeService cinemeService = new CinemeService();
-    private Map<String, Cinema> cinemaData = new HashMap<>();
+    private Map<String, Cinema> cinemaData;
+    public static String CINEMA_FILE_PATH = "src/controller/cinemacontroller/cinema.csv";
+
+    public CinemaController() {
+        this.cinemaData = CinemaCSVUtil.readCinemaFromCSV(CINEMA_FILE_PATH);
+    }
 
     public void showCinemaList() {
         cinemaView.showMessage("Danh sách rạp chiếu phim");
@@ -40,6 +46,7 @@ public class CinemaController {
         ));
         Cinema cinema = new Cinema(idCinema, nameCinema, numberOfScreenRoom);
         cinemaData.put(idCinema, cinema);
+        CinemaCSVUtil.writeCinemaToCSV(cinemaData, CINEMA_FILE_PATH);
         cinemaView.showMessage("Thêm rạp chiếu phim thành công");
     }
 
@@ -74,6 +81,7 @@ public class CinemaController {
         if (!numberOfScreenRoom.trim().isEmpty()) {
             cinema.setNumberOfScreenRoom(Integer.parseInt(numberOfScreenRoom));
         }
+        CinemaCSVUtil.writeCinemaToCSV(cinemaData, CINEMA_FILE_PATH);
         cinemaView.showMessage("Chỉnh sửa rạp chiếu phim thành công");
     }
 
@@ -88,8 +96,9 @@ public class CinemaController {
         String message = cinemaView.getInput("Có chắc chắn muốn xóa rạp chiếu phim này: ");
         if (message.equalsIgnoreCase("Có")) {
             cinemaData.remove(idCinema);
+            CinemaCSVUtil.writeCinemaToCSV(cinemaData, CINEMA_FILE_PATH);
             cinemaView.showMessage("Xóa rạp chiếu phim thành công");
         }
-        cinemaView.showMessage("Xóa rạp chiếu phim không thành công");
+        cinemaView.showMessage("Hủy xóa rạp chiếu");
     }
 }
