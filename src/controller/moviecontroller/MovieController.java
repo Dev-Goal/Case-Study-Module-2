@@ -11,7 +11,7 @@ public class MovieController {
     private CinemaView cinemaView = new CinemaView();
     private CinemeService cinemeService = new CinemeService();
     private Map<String, Movie> movieData;
-    private static final String MOVIE_FILE_PATH = "src/controller/moviecontroller/movie.csv";
+    private static final String MOVIE_FILE_PATH = "src/controller/moviecontroller/movie1.csv";
 
     public MovieController() {
         this.movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
@@ -19,14 +19,16 @@ public class MovieController {
 
     public void showMovieList() {
         cinemaView.showMessage("Danh sách phim");
-        movieData.values().stream().filter(Objects::nonNull).forEach(movie -> cinemaView.showDetailMovie(movie));
+        for (Movie movie : movieData.values()) {
+            cinemaView.showDetailMovie(movie);
+        }
     }
 
     public void addMovie() {
         cinemaView.showMessage("Thêm phim");
         String idMovie = cinemeService.checkValidatedInput("ID phim: ",
                 input -> !input.trim().isEmpty(),
-                id -> movieData.values().stream().anyMatch(movie -> movie.getIdMovie().equalsIgnoreCase(id)),
+                id -> movieData.containsKey(id),
                 "ID phim đã tồn tại. Nhập ID khác");
         String nameMovie = cinemeService.checkValidatedInput("Tên phim: ",
                 input -> !input.trim().isEmpty(),

@@ -11,7 +11,7 @@ public class ScreenRoomController {
     private CinemaView cinemaView = new CinemaView();
     private CinemeService cinemeService = new CinemeService();
     private Map<String, ScreenRoom> screenRoomData;
-    public static String SCREENROOM_FILE_PATH = "src/controller/screenroomcontroller/screenroom.csv";
+    private static final String SCREENROOM_FILE_PATH = "src/controller/screenroomcontroller/screenroom.csv";
 
     public ScreenRoomController() {
         this.screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);

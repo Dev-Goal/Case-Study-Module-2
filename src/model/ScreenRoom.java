@@ -44,7 +44,7 @@ public class ScreenRoom {
         this.showtimes = showtimes;
     }
 
-    public void addShowtime(Showtime showtime) {
+    public void addShowtimes(Showtime showtime) {
         this.showtimes.add(showtime);
     }
 }

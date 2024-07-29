@@ -1,26 +1,24 @@
 package model;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Showtime {
     private String idShowtime;
-    private Set<String> idMovie;
+    private String idMovie;
     private int duration;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Set<String> nameScreenRoom;
+    private String idScreenRoom;
     private int availableSeats;
 
-    public Showtime(String idShowtime, String idMovie, int duration, LocalDateTime startTime, LocalDateTime endTime,
-                    String nameScreenRoom, int availableSeats) {
+    public Showtime(String idShowtime, String idMovie, int duration, LocalDateTime startTime,
+                    LocalDateTime endTime, String idScreenRoom, int availableSeats) {
         this.idShowtime = idShowtime;
-        this.idMovie = new HashSet<>();
+        this.idMovie = idMovie;
         this.duration = duration;
         this.startTime = startTime;
-        this.endTime = endTime;
-        this.nameScreenRoom = new HashSet<>();
+        this.endTime = startTime.plusMinutes(duration);
+        this.idScreenRoom = idScreenRoom;
         this.availableSeats = availableSeats;
     }
 
@@ -28,11 +26,11 @@ public class Showtime {
         return idShowtime;
     }
 
-    public Set<String> getIdMovie() {
+    public String getIdMovie() {
         return idMovie;
     }
 
-    public void setIdMovie(Set<String> idMovie) {
+    public void setIdMovie(String idMovie) {
         this.idMovie = idMovie;
     }
 
@@ -56,12 +54,12 @@ public class Showtime {
         this.endTime = endTime;
     }
 
-    public Set<String> getNameScreenRoom() {
-        return nameScreenRoom;
+    public String getIdScreenRoom() {
+        return idScreenRoom;
     }
 
-    public void setNameScreenRoom(Set<String> nameScreenRoom) {
-        this.nameScreenRoom = nameScreenRoom;
+    public void setIdScreenRoom(String idScreenRoom) {
+        this.idScreenRoom = idScreenRoom;
     }
 
     public int getAvailableSeats() {
