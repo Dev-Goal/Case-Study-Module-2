@@ -1,5 +1,6 @@
 package controller.moviecontroller;
 
+
 import model.Movie;
 import service.CinemeService;
 import view.CinemaView;
@@ -19,16 +20,17 @@ public class MovieController {
 
     public void showMovieList() {
         cinemaView.showMessage("Danh sách phim");
-        for (Movie movie : movieData.values()) {
+        movieData.values().stream().filter(Objects::nonNull).forEach(movie -> {
             cinemaView.showDetailMovie(movie);
-        }
+            cinemaView.showMessage("-----------------------------------------------------------------------");
+        });
     }
 
     public void addMovie() {
         cinemaView.showMessage("Thêm phim");
         String idMovie = cinemeService.checkValidatedInput("ID phim: ",
                 input -> !input.trim().isEmpty(),
-                id -> movieData.containsKey(id),
+                id -> movieData.values().stream().anyMatch(movie -> movie.getIdMovie().equalsIgnoreCase(id)),
                 "ID phim đã tồn tại. Nhập ID khác");
         String nameMovie = cinemeService.checkValidatedInput("Tên phim: ",
                 input -> !input.trim().isEmpty(),

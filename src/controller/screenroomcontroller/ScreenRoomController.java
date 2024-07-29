@@ -89,7 +89,7 @@ public class ScreenRoomController {
 
     public void deleteScreenRoom() {
         cinemaView.showMessage("Xóa phòng chiếu");
-        int idScreenRoom = Integer.parseInt(cinemaView.getInput("ID phòng chiếu: "));
+        String idScreenRoom = cinemaView.getInput("ID phòng chiếu: ");
         ScreenRoom screenRoom = screenRoomData.get(idScreenRoom);
         if (screenRoom == null) {
             cinemaView.showMessage("Phòng chiếu không tồn tại");

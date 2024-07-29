@@ -38,11 +38,11 @@ public class ShowtimeController {
             int duration = showtime.getDuration();
             String startTime = showtime.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy"));
             String endTime = showtime.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy"));
-            String idScreeRoom = showtime.getIdScreenRoom();
-            String nameScreeRoom = screenRoomData.get(idScreeRoom) != null ? screenRoomData.get(idScreeRoom).getNameScreenRoom() : "Không có phòng chiếu";
+            String idScreenRoom = showtime.getIdScreenRoom();
+            String nameScreenRoom = screenRoomData.get(idScreenRoom) != null ? screenRoomData.get(idScreenRoom).getNameScreenRoom() : "Không có phòng chiếu";
             int availableSeats = showtime.getAvailableSeats();
             cinemaView.showMessage("ID suất chiếu: " + idShowtime + " - Tên phim: " + nameMovie
-                    + " - Thời lượng: " + duration + " - Thời gian bắt đầu: " + startTime + " - Phòng chiếu: " + nameScreeRoom
+                    + " - Thời lượng: " + duration + " - Thời gian bắt đầu: " + startTime + " - Phòng chiếu: " + nameScreenRoom
                     + " - Thời gian kết thúc: " + endTime  + " - Số ghế còn lại: " + availableSeats);
             cinemaView.showMessage("-------------------------------------------------------------------------------------------------");
         });
@@ -56,14 +56,14 @@ public class ShowtimeController {
                 "ID suất chiếu này đã tồn tại. Nhập ID khác");
         String idMovie = cinemeService.checkValidatedInput("ID phim: ",
                 input -> !input.trim().isEmpty(),
-                id -> !movieData.containsKey(id),
+                id -> !movieData.values().stream().anyMatch(movie -> movie.getIdMovie().equalsIgnoreCase(id)),
                 "Không có tên phim này");
         Movie movie = movieData.get(idMovie);
         System.out.println(movie);
-        String startTimeStr = cinemaView.getInput("Thời gian bắt đầu (HH:mm dd:MM:yyy): ");
+        String startTimeStr = cinemaView.getInput("Thời gian bắt đầu (HH:mm dd:MM:yyyy): ");
         LocalDateTime startTime;
         try {
-            startTime = LocalDateTime.parse(startTimeStr, DateTimeFormatter.ofPattern("HH:mm dd:MM:yyy"));
+            startTime = LocalDateTime.parse(startTimeStr, DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy"));
         } catch (Exception e) {
             cinemaView.showMessage("Thời gian không đúng form");
             return;
@@ -71,7 +71,7 @@ public class ShowtimeController {
         LocalDateTime endTime = startTime.plusMinutes(movie.getDuration());
         String idScreenRoom = cinemeService.checkValidatedInput("ID phòng chiếu: ",
                 input -> !input.trim().isEmpty(),
-                id -> !screenRoomData.containsKey(id),
+                id -> !screenRoomData.values().stream().anyMatch(screenRoom -> screenRoom.getIdScreenRoom().equalsIgnoreCase(id)),
                 "Không có phòng chiếu này");
         ScreenRoom screenRoom = screenRoomData.get(idScreenRoom);
         Showtime showtime = new Showtime(idShowtime, idMovie, movie.getDuration(), startTime, endTime,
@@ -87,13 +87,13 @@ public class ShowtimeController {
         cinemaView.showMessage("Chỉnh sửa suất chiếu");
         String idShowtime = cinemeService.checkValidatedInput("ID suất chiếu: ",
                 input -> !input.trim().isEmpty(),
-                id -> !showtimeData.containsKey(id),
+                id -> !showtimeData.values().stream().anyMatch(showtime -> showtime.getIdShowtime().equalsIgnoreCase(id)),
                 "Không có suất chiếu thuộc ID này");
         Showtime showtime = showtimeData.get(idShowtime);
-        String startTimeStr = cinemaView.getInput("Thời gian bắt đầu (HH:mm dd:MM:yyy): ");
+        String startTimeStr = cinemaView.getInput("Thời gian bắt đầu (HH:mm dd:MM:yyyy): ");
         LocalDateTime startTime;
         try {
-            startTime = LocalDateTime.parse(startTimeStr, DateTimeFormatter.ofPattern("HH:mm dd:MM:yyy"));
+            startTime = LocalDateTime.parse(startTimeStr, DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy"));
         } catch (Exception e) {
             cinemaView.showMessage("Thời gian không đúng form");
             return;
@@ -101,7 +101,7 @@ public class ShowtimeController {
         LocalDateTime endTime = startTime.plusMinutes(showtime.getDuration());
         String idScreenRoom = cinemeService.checkValidatedInput("ID phòng chiếu: ",
                 input -> !input.trim().isEmpty(),
-                id -> !screenRoomData.containsKey(id),
+                id -> !screenRoomData.values().stream().anyMatch(screenRoom -> screenRoom.getIdScreenRoom().equalsIgnoreCase(id)),
                 "Không có phòng chiếu này");
         ScreenRoom screenRoom = screenRoomData.get(idScreenRoom);
         showtime.setStartTime(startTime);

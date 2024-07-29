@@ -32,19 +32,18 @@ public class CinemaView {
     }
 
     public void showDetailMovie(Movie movie) {
-        System.out.println("ID phim: " + movie.getIdMovie());
-        System.out.println("Tên phim: " + movie.getNameMovie());
-        System.out.println("Thể loại: " + movie.getGenreMovie());
-        System.out.println("Thời lượng: " + movie.getDuration() + " phút");
-        System.out.println("Hình ảnh: " + movie.getImage());
-        System.out.println("Trailer: " + movie.getTrailer());
-        System.out.println("Mô tả: " + movie.getDesc());
-        System.out.println("Danh sách suất chiếu: " + movie.getShowtimes());
+        showMessage("ID phim: " + movie.getIdMovie() + " - Tên phim: " + movie.getNameMovie());
+        showMessage("Thể loại: " + movie.getGenreMovie());
+        showMessage("Thời lượng: " + movie.getDuration() + " phút");
+        showMessage("Hình ảnh: " + movie.getImage());
+        showMessage("Trailer: " + movie.getTrailer());
+        showMessage("Mô tả: " + movie.getDesc());
     }
 
     public void showDetailScreenRoom(ScreenRoom screenRoom) {
-        System.out.println("Tên phòng chiếu: " + screenRoom.getNameScreenRoom());
-        System.out.println("Số lượng ghế: " + screenRoom.getTotalSeats());
+        showMessage("ID phòng chiếu: " + screenRoom.getIdScreenRoom()
+                + " - Tên phòng chiếu: " + screenRoom.getNameScreenRoom()
+                + " - Số lượng ghế: " + screenRoom.getTotalSeats());
     }
 
     public void showDetailCinema(Cinema cinema) {
