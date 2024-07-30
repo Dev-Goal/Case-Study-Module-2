@@ -2,7 +2,9 @@ package controller;
 
 
 import csvutil.MovieCSVUtil;
+import csvutil.ShowtimeCSVUtil;
 import model.Movie;
+import model.Showtime;
 import service.CinemeService;
 import view.CinemaView;
 
@@ -13,12 +15,19 @@ public class MovieController {
     private CinemaView cinemaView = new CinemaView();
     private CinemeService cinemeService = new CinemeService();
     private static final String MOVIE_FILE_PATH = "src/data/movie.csv";
+    private static final String SHOWTIME_FILE_PATH = "src/data/showtime.csv";
     private Map<String, Movie> movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
+    private Map<String, Showtime> showtimeData = ShowtimeCSVUtil.readShowTimeFromCSV(SHOWTIME_FILE_PATH);
 
     public void showMovieList() {
         cinemaView.showMessage("Danh sách phim");
         movieData.values().stream().filter(Objects::nonNull).forEach(movie -> {
             cinemaView.showDetailMovie(movie);
+            showtimeData.values().stream()
+                    .filter(showtime -> showtime.getIdMovie().equals(movie.getIdMovie()))
+                    .forEach(showtime -> {
+                        cinemaView.showMessage("Suất chiếu: " + showtime.getStartTime());
+                    });
             cinemaView.showMessage("-----------------------------------------------------------------------");
         });
     }
