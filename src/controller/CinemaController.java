@@ -14,13 +14,12 @@ public class CinemaController {
     public static String CINEMA_FILE_PATH = "src/data/cinema.csv";
     private Map<String, Cinema> cinemaData = CinemaCSVUtil.readCinemaFromCSV(CINEMA_FILE_PATH);
 
-//    public CinemaController() {
-//        this.cinemaData = CinemaCSVUtil.readCinemaFromCSV(CINEMA_FILE_PATH);
-//    }
-
     public void showCinemaList() {
         cinemaView.showMessage("Danh sách rạp chiếu phim");
-        cinemaData.values().stream().filter(Objects::nonNull).forEach(cinema -> cinemaView.showDetailCinema(cinema));
+        cinemaData.values().stream().filter(Objects::nonNull).forEach(cinema -> {
+            cinemaView.showDetailCinema(cinema);
+            cinemaView.showMessage("-----------------------------------------------------------------------");
+        });
     }
 
     public void addCinema() {
@@ -32,7 +31,7 @@ public class CinemaController {
         String nameCinema = cinemeService.checkValidatedInput("Tên rạp chiếu phim: ",
                 input -> !input.trim().isEmpty(),
                 name -> cinemaData.values().stream().anyMatch(cinema -> cinema.getNameCinema().equalsIgnoreCase(name)),
-                "Tên rạp chiếu phim đã tồn tại. Nhập tên rạp chiếu phim khác");
+                "Tên rạp chiếu phim đã có. Nhập tên rạp chiếu phim khác");
         int numberOfScreenRoom = Integer.parseInt(cinemeService.checkValidatedInput("Số lương phòng chiếu: ",
                 input -> {
                     try {
@@ -51,21 +50,22 @@ public class CinemaController {
 
     public void editCinema() {
         cinemaView.showMessage("Chỉnh sửa rạp chiếu phim");
-        String idCinema = cinemaView.getInput("ID rạp chiếu phim: ");
+        String idCinema = cinemeService.checkValidatedInput("ID rạp chiếu: ",
+                input -> !input.trim().isEmpty(),
+                id -> !cinemaData.values().stream().anyMatch(cinema -> cinema.getIdCinema().equalsIgnoreCase(id)),
+                "Không có rạp chiếu phim thuộc ID này");
         Cinema cinema = cinemaData.get(idCinema);
-        if (cinema == null) {
-            cinemaView.showMessage("Không có rạp chiếu phim thuộc ID này");
-            return;
-        }
-        String nameCinema = cinemeService.checkValidatedInput("Tên rạp chiếu phim(có thể bỏ qua nếu không thay đổi): ",
+        String nameCinema = cinemeService.checkValidatedInput("Tên rạp chiếu phim (bỏ qua nếu không thay đổi): ",
                 input -> true,
-                name -> !name.trim().isEmpty() && cinemaData.values().stream().anyMatch(newCinema -> newCinema.getNameCinema().equalsIgnoreCase(name) && !newCinema.getIdCinema().equals(idCinema)),
-                "Tên rạp chiếu phim đã tồn tại"
+                name -> !name.trim().isEmpty() && cinemaData.values().stream()
+                        .anyMatch(newCinema -> newCinema.getNameCinema().equalsIgnoreCase(name)
+                                && !newCinema.getIdCinema().equals(idCinema)),
+                "Tên rạp chiếu phim này đã có"
         );
         if (!nameCinema.trim().isEmpty()) {
             cinema.setNameCinema(nameCinema);
         }
-        String numberOfScreenRoom = cinemeService.checkValidatedInput("Số lượng phòng chiếu (có thể bỏ qua nếu không thay đổi): ",
+        String numberOfScreenRoom = cinemeService.checkValidatedInput("Số lượng phòng chiếu (bỏ qua nếu không thay đổi): ",
                 input -> {
                     if (input.trim().isEmpty()) {
                         return true;
@@ -86,12 +86,10 @@ public class CinemaController {
 
     public void deleteCinema() {
         cinemaView.showMessage("Xóa rạp chiếu phim");
-        String idCinema = cinemaView.getInput("ID rạp chiếu phim: ");
-        Cinema cinema = cinemaData.get(idCinema);
-        if (cinema == null) {
-            cinemaView.showMessage("Không có rạp chiếu phim này");
-            return;
-        }
+        String idCinema = cinemeService.checkValidatedInput("ID rạp chiếu phim: ",
+                input -> !input.trim().isEmpty(),
+                id -> !cinemaData.values().stream().anyMatch(cinema -> cinema.getIdCinema().equalsIgnoreCase(id)),
+                "Không có rạp chiếu phim thuộc ID này");
         String message = cinemaView.getInput("Có chắc chắn muốn xóa rạp chiếu phim này: ");
         if (message.equalsIgnoreCase("Có")) {
             cinemaData.remove(idCinema);

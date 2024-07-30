@@ -27,13 +27,13 @@ public class CinemaView {
     }
 
     public void showDetailRoleOfUser(User user) {
-        System.out.println("Tên đăng nhập: " + user.getUsername() + " - Vai trò: " + user.getRoles()
+        showMessage("Tên đăng nhập: " + user.getUsername() + " - Vai trò: " + user.getRoles()
                 + " - Họ và tên: " + user.getFullName());
     }
 
     public void showDetailMovie(Movie movie) {
         showMessage("ID phim: " + movie.getIdMovie() + " - Tên phim: " + movie.getNameMovie()
-                + "Thời lượng: " + movie.getDuration() + " phút");
+                + " - Thời lượng: " + movie.getDuration() + " phút");
         showMessage("Thể loại: " + movie.getGenreMovie());
         showMessage("Hình ảnh: " + movie.getImage());
         showMessage("Trailer: " + movie.getTrailer());
@@ -47,15 +47,14 @@ public class CinemaView {
     }
 
     public void showDetailCinema(Cinema cinema) {
-        System.out.println("Tên rạp chiếu: " + cinema.getNameCinema() + " - Số lượng phòng: " + cinema.getNumberOfScreenRoom());
+        showMessage("ID rạp chiếu phim: " + cinema.getIdCinema() + "Tên rạp chiếu phim: " + cinema.getNameCinema()
+                + " - Số lượng phòng: " + cinema.getNumberOfScreenRoom());
     }
 
     public void showDetailPromotion(Promotion promotion) {
-        System.out.println("Mã khuyến mãi: " + promotion.getCodePromotion());
-        System.out.println("Tên khuyến mãi: " + promotion.getNamePromotion());
-        System.out.println("Mô tả: " + promotion.getDesc());
-        System.out.println("Giảm giá: " + promotion.getDiscountAmount());
-        System.out.println("Số lượng: " + promotion.getAmount());
+        showMessage("Mã khuyến mãi: " + promotion.getCodePromotion() + " - Tên khuyến mãi: " + promotion.getNamePromotion()
+                + " - Số lượng: " + promotion.getAmount());
+        showMessage("Mô tả: " + promotion.getDesc() + " - Giảm giá: " + promotion.getDiscountAmount());
     }
 
 

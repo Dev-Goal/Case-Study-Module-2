@@ -14,13 +14,13 @@ public class ScreenRoomController {
     private Map<String, ScreenRoom> screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
     private static final String SCREENROOM_FILE_PATH = "src/data/screenroom.csv";
 
-//    public ScreenRoomController() {
-//        this.screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
-//    }
 
     public void showScreenRoomList() {
         cinemaView.showMessage("Danh sách phòng chiếu");
-        screenRoomData.values().stream().filter(Objects::nonNull).forEach(screenRoom -> cinemaView.showDetailScreenRoom(screenRoom));
+        screenRoomData.values().stream().filter(Objects::nonNull).forEach(screenRoom -> {
+            cinemaView.showDetailScreenRoom(screenRoom);
+            cinemaView.showMessage("-----------------------------------------------------------------------");
+        });
     }
 
     public void addScreenRoom() {
@@ -28,7 +28,7 @@ public class ScreenRoomController {
         String idScreenRoom = cinemeService.checkValidatedInput("ID phòng chiếu: ",
                 input -> !input.trim().isEmpty(),
                 id -> screenRoomData.values().stream().anyMatch(screenRoom -> screenRoom.getIdScreenRoom().equalsIgnoreCase(id)),
-                "ID phòng chiếu này đã tồn tại. Nhập ID khác");
+                "Không có phòng chiếu thuộc ID này. Nhập ID khác");
         String nameScreenRoom = cinemeService.checkValidatedInput("Tên phòng chiếu: ",
                 input -> !input.trim().isEmpty(),
                 name -> screenRoomData.values().stream().anyMatch(screenRoom -> screenRoom.getNameScreenRoom().equalsIgnoreCase(name)),
@@ -52,18 +52,17 @@ public class ScreenRoomController {
 
     public void editScreenRoom() {
         cinemaView.showMessage("Chỉnh sửa phòng chiếu");
-        String idScreenRoom = cinemaView.getInput("ID phòng chiếu bạn muốn sửa: ");
+        String idScreenRoom = cinemeService.checkValidatedInput("ID phòng chiếu: ",
+                input -> !input.trim().isEmpty(),
+                id -> !screenRoomData.values().stream().anyMatch(screenRoom -> screenRoom.getIdScreenRoom().equalsIgnoreCase(id)),
+                "Không có phòng chiếu thuộc ID này");
         ScreenRoom screenRoom = screenRoomData.get(idScreenRoom);
-        if (screenRoom == null) {
-            cinemaView.showMessage("Phòng chiếu không tồn tại");
-            return;
-        }
         String nameScreenRoom = cinemeService.checkValidatedInput("Tên phòng chiếu (có thể bỏ qua nếu không thay đổi): ",
                 input -> true,
                 name -> !name.trim().isEmpty() && screenRoomData.values().stream()
                         .anyMatch(newScreenRoom -> newScreenRoom.getNameScreenRoom().equalsIgnoreCase(name)
                                 && !newScreenRoom.getIdScreenRoom().equals(idScreenRoom)),
-                "Tên phòng chiếu đã có trong rạp. Nhập tên phòng chiếu khác");
+                "Tên phòng chiếu đã có");
         if (!nameScreenRoom.trim().isEmpty()) {
             screenRoom.setNameScreenRoom(nameScreenRoom);
         }
@@ -90,12 +89,10 @@ public class ScreenRoomController {
 
     public void deleteScreenRoom() {
         cinemaView.showMessage("Xóa phòng chiếu");
-        String idScreenRoom = cinemaView.getInput("ID phòng chiếu: ");
-        ScreenRoom screenRoom = screenRoomData.get(idScreenRoom);
-        if (screenRoom == null) {
-            cinemaView.showMessage("Phòng chiếu không tồn tại");
-            return;
-        }
+        String idScreenRoom = cinemeService.checkValidatedInput("ID phòng chiếu: ",
+                input -> !input.trim().isEmpty(),
+                id -> !screenRoomData.values().stream().anyMatch(screenRoom -> screenRoom.getIdScreenRoom().equalsIgnoreCase(id)),
+                "Không có phòng chiếu thuộc ID này");
         String message =  cinemaView.getInput("Có chắc chắn xóa phòng chiếu này: ");
         if (message.equalsIgnoreCase("Có")) {
             screenRoomData.remove(idScreenRoom);
