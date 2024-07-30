@@ -1,13 +1,4 @@
-package controller.ticketcontroller;
-
-import model.*;
-import service.CinemeService;
-import view.CinemaView;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+package controller;
 
 public class TicketController {
 //    private CinemaView cinemaView = new CinemaView();

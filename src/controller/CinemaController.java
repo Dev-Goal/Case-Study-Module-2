@@ -1,5 +1,6 @@
-package controller.cinemacontroller;
+package controller;
 
+import csvutil.CinemaCSVUtil;
 import model.Cinema;
 import service.CinemeService;
 import view.CinemaView;

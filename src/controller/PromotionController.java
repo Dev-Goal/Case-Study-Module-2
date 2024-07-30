@@ -1,4 +1,4 @@
-package controller.promotioncontroller;
+package controller;
 
 import model.Promotion;
 import service.CinemeService;

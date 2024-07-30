@@ -1,4 +1,4 @@
-package controller.moviecontroller;
+package csvutil;
 
 import model.Movie;
 

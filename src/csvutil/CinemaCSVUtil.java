@@ -1,4 +1,4 @@
-package controller.cinemacontroller;
+package csvutil;
 
 import model.Cinema;
 

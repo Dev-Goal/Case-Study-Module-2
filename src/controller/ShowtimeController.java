@@ -1,7 +1,8 @@
-package controller.showtimecontroller;
+package controller;
 
-import controller.moviecontroller.MovieCSVUtil;
-import controller.screenroomcontroller.ScreenRoomCSVUtil;
+import csvutil.MovieCSVUtil;
+import csvutil.ScreenRoomCSVUtil;
+import csvutil.ShowtimeCSVUtil;
 import model.Movie;
 import model.ScreenRoom;
 import model.Showtime;

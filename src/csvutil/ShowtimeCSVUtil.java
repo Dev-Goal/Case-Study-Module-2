@@ -1,4 +1,4 @@
-package controller.showtimecontroller;
+package csvutil;
 
 import model.Showtime;
 

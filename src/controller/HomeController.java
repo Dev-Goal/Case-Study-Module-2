@@ -1,17 +1,11 @@
 package controller;
 
-import controller.cinemacontroller.CinemaController;
-import controller.moviecontroller.MovieController;
-import controller.promotioncontroller.PromotionController;
-import controller.screenroomcontroller.ScreenRoomController;
-import controller.showtimecontroller.ShowtimeController;
 import model.*;
-import service.CinemeService;
 import view.CinemaView;
 
 import java.util.*;
 
-public class Home {
+public class HomeController {
     private Map<String, User> userData = new HashMap<>();
 
     private CinemaView cinemaView = new CinemaView();
@@ -21,7 +15,7 @@ public class Home {
     private ShowtimeController showtimeController = new ShowtimeController();
     private PromotionController promotionController = new PromotionController();
 
-    public Home() {
+    public HomeController() {
         createAccountAdmin();
     }
 
