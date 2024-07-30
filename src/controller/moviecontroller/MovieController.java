@@ -11,12 +11,12 @@ import java.util.Objects;
 public class MovieController {
     private CinemaView cinemaView = new CinemaView();
     private CinemeService cinemeService = new CinemeService();
-    private Map<String, Movie> movieData;
-    private static final String MOVIE_FILE_PATH = "src/controller/moviecontroller/movie1.csv";
+    private static final String MOVIE_FILE_PATH = "src/data/movie.csv";
+    private Map<String, Movie> movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
 
-    public MovieController() {
-        this.movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
-    }
+//    public MovieController() {
+//        this.movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
+//    }
 
     public void showMovieList() {
         cinemaView.showMessage("Danh sách phim");

@@ -32,9 +32,9 @@ public class CinemaView {
     }
 
     public void showDetailMovie(Movie movie) {
-        showMessage("ID phim: " + movie.getIdMovie() + " - Tên phim: " + movie.getNameMovie());
+        showMessage("ID phim: " + movie.getIdMovie() + " - Tên phim: " + movie.getNameMovie()
+                + "Thời lượng: " + movie.getDuration() + " phút");
         showMessage("Thể loại: " + movie.getGenreMovie());
-        showMessage("Thời lượng: " + movie.getDuration() + " phút");
         showMessage("Hình ảnh: " + movie.getImage());
         showMessage("Trailer: " + movie.getTrailer());
         showMessage("Mô tả: " + movie.getDesc());

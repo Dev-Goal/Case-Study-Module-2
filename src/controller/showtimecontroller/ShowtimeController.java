@@ -16,18 +16,18 @@ import java.util.Objects;
 public class ShowtimeController {
     private CinemaView cinemaView = new CinemaView();
     private CinemeService cinemeService = new CinemeService();
-    private Map<String, Movie> movieData;
-    private Map<String, ScreenRoom> screenRoomData;
-    private Map<String, Showtime> showtimeData;
-    private static final String MOVIE_FILE_PATH = "src/controller/moviecontroller/movie1.csv";
-    private static final String SCREENROOM_FILE_PATH = "src/controller/screenroomcontroller/screenroom.csv";
-    private static final String SHOWTIME_FILE_PATH = "src/controller/showtimecontroller/showtime.csv";
+    private static final String MOVIE_FILE_PATH = "src/data/movie.csv";
+    private static final String SCREENROOM_FILE_PATH = "src/data/screenroom.csv";
+    private static final String SHOWTIME_FILE_PATH = "src/data/showtime.csv";
+    private Map<String, Movie> movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
+    private Map<String, ScreenRoom> screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
+    private Map<String, Showtime> showtimeData = ShowtimeCSVUtil.readShowTimeFromCSV(SHOWTIME_FILE_PATH);
 
-    public ShowtimeController() {
-        movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
-        screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
-        showtimeData = ShowtimeCSVUtil.readShowTimeFromCSV(SHOWTIME_FILE_PATH);
-    }
+//    public ShowtimeController() {
+//        movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
+//        screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
+//        showtimeData = ShowtimeCSVUtil.readShowTimeFromCSV(SHOWTIME_FILE_PATH);
+//    }
 
     public void showListShowTimes() {
         cinemaView.showMessage("Danh sách suất chiếu");

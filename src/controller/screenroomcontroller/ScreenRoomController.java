@@ -10,12 +10,12 @@ import java.util.Objects;
 public class ScreenRoomController {
     private CinemaView cinemaView = new CinemaView();
     private CinemeService cinemeService = new CinemeService();
-    private Map<String, ScreenRoom> screenRoomData;
-    private static final String SCREENROOM_FILE_PATH = "src/controller/screenroomcontroller/screenroom.csv";
+    private Map<String, ScreenRoom> screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
+    private static final String SCREENROOM_FILE_PATH = "src/data/screenroom.csv";
 
-    public ScreenRoomController() {
-        this.screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
-    }
+//    public ScreenRoomController() {
+//        this.screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
+//    }
 
     public void showScreenRoomList() {
         cinemaView.showMessage("Danh sách phòng chiếu");

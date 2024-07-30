@@ -1,23 +1,21 @@
 package controller.cinemacontroller;
 
 import model.Cinema;
-import model.ScreenRoom;
 import service.CinemeService;
 import view.CinemaView;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class CinemaController {
     private CinemaView cinemaView = new CinemaView();
     private CinemeService cinemeService = new CinemeService();
-    private Map<String, Cinema> cinemaData;
-    public static String CINEMA_FILE_PATH = "src/controller/cinemacontroller/cinema.csv";
+    public static String CINEMA_FILE_PATH = "src/data/cinema.csv";
+    private Map<String, Cinema> cinemaData = CinemaCSVUtil.readCinemaFromCSV(CINEMA_FILE_PATH);
 
-    public CinemaController() {
-        this.cinemaData = CinemaCSVUtil.readCinemaFromCSV(CINEMA_FILE_PATH);
-    }
+//    public CinemaController() {
+//        this.cinemaData = CinemaCSVUtil.readCinemaFromCSV(CINEMA_FILE_PATH);
+//    }
 
     public void showCinemaList() {
         cinemaView.showMessage("Danh sách rạp chiếu phim");
