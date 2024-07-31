@@ -1,6 +1,8 @@
 package controller;
 
+import csvutil.CinemaCSVUtil;
 import csvutil.ScreenRoomCSVUtil;
+import model.Cinema;
 import model.ScreenRoom;
 import service.CinemeService;
 import view.CinemaView;
@@ -11,19 +13,32 @@ import java.util.Objects;
 public class ScreenRoomController {
     private CinemaView cinemaView = new CinemaView();
     private CinemeService cinemeService = new CinemeService();
-    private Map<String, ScreenRoom> screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
     private static final String SCREENROOM_FILE_PATH = "src/data/screenroom.csv";
+    private static final String CINEMA_FILE_PATH = "src/data/cinema.csv";
+    private Map<String, ScreenRoom> screenRoomData ;
+    private Map<String, Cinema> cinemaData;
 
+    private void loadData() {
+        this.screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
+        this.cinemaData = CinemaCSVUtil.readCinemaFromCSV(CINEMA_FILE_PATH);
+    }
 
     public void showScreenRoomList() {
+        loadData();
         cinemaView.showMessage("Danh sách phòng chiếu");
         screenRoomData.values().stream().filter(Objects::nonNull).forEach(screenRoom -> {
-            cinemaView.showDetailScreenRoom(screenRoom);
+            String cinemaName = "Không có rạp chiếu này";
+            Cinema cinema = cinemaData.get(screenRoom.getIdCinema());
+            if (cinema != null) {
+                cinemaName = cinema.getNameCinema();
+            }
+            cinemaView.showDetailScreenRoom(screenRoom, cinemaName);
             cinemaView.showMessage("-----------------------------------------------------------------------");
         });
     }
 
     public void addScreenRoom() {
+        loadData();
         cinemaView.showMessage("Thêm phòng chiếu");
         String idScreenRoom = cinemeService.checkValidatedInput("ID phòng chiếu: ",
                 input -> !input.trim().isEmpty(),
@@ -44,13 +59,20 @@ public class ScreenRoomController {
                     }
                 }, null, "Số lượng không hợp lệ"
         ));
-        ScreenRoom screenRoom = new ScreenRoom(idScreenRoom, nameScreenRoom, totalSeats);
+        String idCinema = cinemeService.checkValidatedInput("ID rạp chiếu: ",
+                input -> !input.trim().isEmpty(),
+                id -> !cinemaData.values().stream().anyMatch(cinema -> cinema.getIdCinema().equalsIgnoreCase(id)),
+                "Không có rạp chiếu phim thuộc ID này");
+        Cinema cinema = cinemaData.get(idScreenRoom);
+        ScreenRoom screenRoom = new ScreenRoom(idScreenRoom, nameScreenRoom, totalSeats, idCinema);
         screenRoomData.put(idScreenRoom, screenRoom);
+        cinema.addScreenRoom(screenRoom);
         ScreenRoomCSVUtil.writeScreenRoomToCSV(screenRoomData, SCREENROOM_FILE_PATH);
         cinemaView.showMessage("Thêm phòng chiếu thành công");
     }
 
     public void editScreenRoom() {
+        loadData();
         cinemaView.showMessage("Chỉnh sửa phòng chiếu");
         String idScreenRoom = cinemeService.checkValidatedInput("ID phòng chiếu: ",
                 input -> !input.trim().isEmpty(),
@@ -83,11 +105,19 @@ public class ScreenRoomController {
         if (!totalSeats.trim().isEmpty()) {
             screenRoom.setTotalSeats(Integer.parseInt(totalSeats));
         }
+        String idCinema = cinemeService.checkValidatedInput("ID rạp chiếu (bỏ qua nếu không thay đổi: ",
+                input -> true,
+                id -> !cinemaData.values().stream().anyMatch(cinema -> cinema.getIdCinema().equalsIgnoreCase(id)),
+                "Không có rạp chiếu thuộc ID này");
+        if (!idCinema.trim().isEmpty()) {
+            screenRoom.setIdCinema(idCinema);
+        }
         ScreenRoomCSVUtil.writeScreenRoomToCSV(screenRoomData, SCREENROOM_FILE_PATH);
         cinemaView.showMessage("Chỉnh sửa phòng chiếu thành công");
     }
 
     public void deleteScreenRoom() {
+        loadData();
         cinemaView.showMessage("Xóa phòng chiếu");
         String idScreenRoom = cinemeService.checkValidatedInput("ID phòng chiếu: ",
                 input -> !input.trim().isEmpty(),

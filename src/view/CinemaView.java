@@ -40,15 +40,21 @@ public class CinemaView {
         showMessage("Mô tả: " + movie.getDesc());
     }
 
-    public void showDetailScreenRoom(ScreenRoom screenRoom) {
+    public void showDetailScreenRoom(ScreenRoom screenRoom, String cinemaName) {
         showMessage("ID phòng chiếu: " + screenRoom.getIdScreenRoom()
                 + " - Tên phòng chiếu: " + screenRoom.getNameScreenRoom()
-                + " - Số lượng ghế: " + screenRoom.getTotalSeats());
+                + " - Số lượng ghế: " + screenRoom.getTotalSeats()
+                + " - Tên rạp chiếu: " + cinemaName);
     }
 
     public void showDetailCinema(Cinema cinema) {
-        showMessage("ID rạp chiếu phim: " + cinema.getIdCinema() + "Tên rạp chiếu phim: " + cinema.getNameCinema()
+        showMessage("ID rạp chiếu phim: " + cinema.getIdCinema() + " - Tên rạp chiếu phim: " + cinema.getNameCinema()
                 + " - Số lượng phòng: " + cinema.getNumberOfScreenRoom());
+        showMessage("Các phòng chiếu: ");
+        for (ScreenRoom screenRoom : cinema.getScreenRooms()) {
+            showMessage("ID phòng chiếu: " + screenRoom.getIdScreenRoom()
+                    + " - Tên phòng chiếu: " + screenRoom.getNameScreenRoom());
+        }
     }
 
     public void showDetailPromotion(Promotion promotion) {

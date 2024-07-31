@@ -11,10 +11,15 @@ import java.util.Objects;
 public class CinemaController {
     private CinemaView cinemaView = new CinemaView();
     private CinemeService cinemeService = new CinemeService();
-    public static String CINEMA_FILE_PATH = "src/data/cinema.csv";
-    private Map<String, Cinema> cinemaData = CinemaCSVUtil.readCinemaFromCSV(CINEMA_FILE_PATH);
+    private static final String CINEMA_FILE_PATH = "src/data/cinema.csv";
+    private Map<String, Cinema> cinemaData;
+
+    private void loadData() {
+        this.cinemaData = CinemaCSVUtil.readCinemaFromCSV(CINEMA_FILE_PATH);
+    }
 
     public void showCinemaList() {
+        loadData();
         cinemaView.showMessage("Danh sách rạp chiếu phim");
         cinemaData.values().stream().filter(Objects::nonNull).forEach(cinema -> {
             cinemaView.showDetailCinema(cinema);
@@ -23,6 +28,7 @@ public class CinemaController {
     }
 
     public void addCinema() {
+        loadData();
         cinemaView.showMessage("Thêm rạp chiếu phim");
         String idCinema = cinemeService.checkValidatedInput("ID rạp chiếu phim: ",
                 input -> !input.trim().isEmpty(),
@@ -49,6 +55,7 @@ public class CinemaController {
     }
 
     public void editCinema() {
+        loadData();
         cinemaView.showMessage("Chỉnh sửa rạp chiếu phim");
         String idCinema = cinemeService.checkValidatedInput("ID rạp chiếu: ",
                 input -> !input.trim().isEmpty(),
@@ -85,6 +92,7 @@ public class CinemaController {
     }
 
     public void deleteCinema() {
+        loadData();
         cinemaView.showMessage("Xóa rạp chiếu phim");
         String idCinema = cinemeService.checkValidatedInput("ID rạp chiếu phim: ",
                 input -> !input.trim().isEmpty(),

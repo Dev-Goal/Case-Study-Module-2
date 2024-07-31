@@ -7,13 +7,13 @@ public class Cinema {
     private String idCinema;
     private String nameCinema;
     private int numberOfScreenRoom;
-    private Set<ScreenRoom> nameScreenRoom;
+    private Set<ScreenRoom> screenRooms;
 
     public Cinema(String idCinema, String nameCinema, int numberOfScreenRoom) {
         this.idCinema = idCinema;
         this.nameCinema = nameCinema;
         this.numberOfScreenRoom = numberOfScreenRoom;
-        this.nameScreenRoom = new HashSet<>();
+        this.screenRooms = new HashSet<>();
     }
 
     public String getIdCinema() {
@@ -36,11 +36,11 @@ public class Cinema {
         this.numberOfScreenRoom = numberOfScreenRoom;
     }
 
-    public Set<ScreenRoom> getNameScreenRoom() {
-        return nameScreenRoom;
+    public Set<ScreenRoom> getScreenRooms() {
+        return screenRooms;
     }
 
     public void addScreenRoom(ScreenRoom screenRoom) {
-        nameScreenRoom.add(screenRoom);
+        screenRooms.add(screenRoom);
     }
 }

@@ -16,8 +16,8 @@ public class MovieController {
     private CinemeService cinemeService = new CinemeService();
     private static final String MOVIE_FILE_PATH = "src/data/movie.csv";
     private static final String SHOWTIME_FILE_PATH = "src/data/showtime.csv";
-    private Map<String, Movie> movieData ;
-    private Map<String, Showtime> showtimeData ;
+    private Map<String, Movie> movieData;
+    private Map<String, Showtime> showtimeData;
 
     private void loadData() {
         this.movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);

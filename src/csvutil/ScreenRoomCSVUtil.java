@@ -13,11 +13,12 @@ public class ScreenRoomCSVUtil {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] values = line.split(",");
-                if (values.length == 3) {
+                if (values.length == 4) {
                     String idScreenRoom = values[0];
                     String nameScreenRoom = values[1];
                     int totalSeats = Integer.parseInt(values[2]);
-                    ScreenRoom screenRoom = new ScreenRoom(idScreenRoom, nameScreenRoom, totalSeats);
+                    String idCinema = values[3];
+                    ScreenRoom screenRoom = new ScreenRoom(idScreenRoom, nameScreenRoom, totalSeats, idCinema);
                     screenRoomData.put(idScreenRoom, screenRoom);
                 }
             }
@@ -33,7 +34,8 @@ public class ScreenRoomCSVUtil {
                 bufferedWriter.write(String.join(",",
                         screenRoom.getIdScreenRoom(),
                         screenRoom.getNameScreenRoom(),
-                        String.valueOf(screenRoom.getTotalSeats())));
+                        String.valueOf(screenRoom.getTotalSeats()),
+                        screenRoom.getIdCinema()));
                 bufferedWriter.newLine();
             }
         } catch (IOException e) {
