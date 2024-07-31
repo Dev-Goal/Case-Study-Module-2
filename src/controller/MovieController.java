@@ -16,13 +16,20 @@ public class MovieController {
     private CinemeService cinemeService = new CinemeService();
     private static final String MOVIE_FILE_PATH = "src/data/movie.csv";
     private static final String SHOWTIME_FILE_PATH = "src/data/showtime.csv";
-    private Map<String, Movie> movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
-    private Map<String, Showtime> showtimeData = ShowtimeCSVUtil.readShowTimeFromCSV(SHOWTIME_FILE_PATH);
+    private Map<String, Movie> movieData ;
+    private Map<String, Showtime> showtimeData ;
+
+    private void loadData() {
+        this.movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
+        this.showtimeData = ShowtimeCSVUtil.readShowTimeFromCSV(SHOWTIME_FILE_PATH);
+    }
 
     public void showMovieList() {
+        loadData();
         cinemaView.showMessage("Danh sách phim");
         movieData.values().stream().filter(Objects::nonNull).forEach(movie -> {
             cinemaView.showDetailMovie(movie);
+            cinemaView.showMessage("Các suất chiếu:");
             showtimeData.values().stream()
                     .filter(showtime -> showtime.getIdMovie().equals(movie.getIdMovie()))
                     .forEach(showtime -> {
@@ -33,6 +40,7 @@ public class MovieController {
     }
 
     public void addMovie() {
+        loadData();
         cinemaView.showMessage("Thêm phim");
         String idMovie = cinemeService.checkValidatedInput("ID phim: ",
                 input -> !input.trim().isEmpty(),
@@ -74,6 +82,7 @@ public class MovieController {
     }
 
     public void editMovie() {
+        loadData();
         cinemaView.showMessage("Chỉnh sửa thông tin phim");
         String idMovie = cinemeService.checkValidatedInput("ID phim: ",
                 input -> !input.trim().isEmpty(),
@@ -150,6 +159,7 @@ public class MovieController {
     }
 
     public void deleteMovie() {
+        loadData();
         cinemaView.showMessage("Xóa phim");
         String idMovie = cinemeService.checkValidatedInput("ID phim: ",
                 input -> !input.trim().isEmpty(),

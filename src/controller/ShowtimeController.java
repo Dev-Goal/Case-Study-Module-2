@@ -20,11 +20,18 @@ public class ShowtimeController {
     private static final String MOVIE_FILE_PATH = "src/data/movie.csv";
     private static final String SCREENROOM_FILE_PATH = "src/data/screenroom.csv";
     private static final String SHOWTIME_FILE_PATH = "src/data/showtime.csv";
-    private Map<String, Movie> movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
-    private Map<String, ScreenRoom> screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
-    private Map<String, Showtime> showtimeData = ShowtimeCSVUtil.readShowTimeFromCSV(SHOWTIME_FILE_PATH);
+    private Map<String, Movie> movieData;
+    private Map<String, ScreenRoom> screenRoomData;
+    private Map<String, Showtime> showtimeData;
+
+    private void loadData() {
+        this.movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
+        this.screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
+        this.showtimeData = ShowtimeCSVUtil.readShowTimeFromCSV(SHOWTIME_FILE_PATH);
+    }
 
     public void showListShowTimes() {
+        loadData();
         cinemaView.showMessage("Danh sách suất chiếu");
         showtimeData.values().stream().filter(Objects::nonNull).forEach(showtime -> {
             String idShowtime = showtime.getIdShowtime();
@@ -44,6 +51,7 @@ public class ShowtimeController {
     }
 
     public void addShowTimes() {
+        loadData();
         cinemaView.showMessage("Thêm suất chiếu");
         String idShowtime = cinemeService.checkValidatedInput("ID suất chiếu: ",
                 input -> !input.trim().isEmpty(),
@@ -79,6 +87,7 @@ public class ShowtimeController {
     }
 
     public void editShowTimes() {
+        loadData();
         cinemaView.showMessage("Chỉnh sửa suất chiếu");
         String idShowtime = cinemeService.checkValidatedInput("ID suất chiếu: ",
                 input -> !input.trim().isEmpty(),
@@ -110,6 +119,7 @@ public class ShowtimeController {
     }
 
     public void deleteShowTimes() {
+        loadData();
         cinemaView.showMessage("Xóa suất chiếu");
         String idShowtime = cinemeService.checkValidatedInput("ID suất chiếu: ",
                 input -> !input.trim().isEmpty(),
