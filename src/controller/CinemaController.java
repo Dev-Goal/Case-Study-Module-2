@@ -33,7 +33,7 @@ public class CinemaController {
         String idCinema = cinemeService.checkValidatedInput("ID rạp chiếu phim: ",
                 input -> !input.trim().isEmpty(),
                 id -> cinemaData.values().stream().anyMatch(cinema -> cinema.getIdCinema().equalsIgnoreCase(id)),
-                "ID rạp chiếu phim đã tồn tại. Nhập ID khác");
+                "ID rạp chiếu phim đã có");
         String nameCinema = cinemeService.checkValidatedInput("Tên rạp chiếu phim: ",
                 input -> !input.trim().isEmpty(),
                 name -> cinemaData.values().stream().anyMatch(cinema -> cinema.getNameCinema().equalsIgnoreCase(name)),

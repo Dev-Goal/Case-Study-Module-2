@@ -41,6 +41,6 @@ public class Cinema {
     }
 
     public void addScreenRoom(ScreenRoom screenRoom) {
-        screenRooms.add(screenRoom);
+        this.screenRooms.add(screenRoom);
     }
 }

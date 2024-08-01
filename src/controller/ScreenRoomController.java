@@ -43,7 +43,7 @@ public class ScreenRoomController {
         String idScreenRoom = cinemeService.checkValidatedInput("ID phòng chiếu: ",
                 input -> !input.trim().isEmpty(),
                 id -> screenRoomData.values().stream().anyMatch(screenRoom -> screenRoom.getIdScreenRoom().equalsIgnoreCase(id)),
-                "Không có phòng chiếu thuộc ID này. Nhập ID khác");
+                "ID phòng chiếu này đã có");
         String nameScreenRoom = cinemeService.checkValidatedInput("Tên phòng chiếu: ",
                 input -> !input.trim().isEmpty(),
                 name -> screenRoomData.values().stream().anyMatch(screenRoom -> screenRoom.getNameScreenRoom().equalsIgnoreCase(name)),
@@ -63,7 +63,7 @@ public class ScreenRoomController {
                 input -> !input.trim().isEmpty(),
                 id -> !cinemaData.values().stream().anyMatch(cinema -> cinema.getIdCinema().equalsIgnoreCase(id)),
                 "Không có rạp chiếu phim thuộc ID này");
-        Cinema cinema = cinemaData.get(idScreenRoom);
+        Cinema cinema = cinemaData.get(idCinema);
         ScreenRoom screenRoom = new ScreenRoom(idScreenRoom, nameScreenRoom, totalSeats, idCinema);
         screenRoomData.put(idScreenRoom, screenRoom);
         cinema.addScreenRoom(screenRoom);
