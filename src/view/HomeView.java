@@ -4,10 +4,10 @@ import model.*;
 
 import java.util.Scanner;
 
-public class CinemaView {
+public class HomeView {
     private Scanner scanner = new Scanner(System.in);
 
-    public static void showMenuHome() {
+    public void showMenuHome() {
         System.out.print("""
                 Chào mừng đến với Cinema\s
                 1. Đăng nhập\s

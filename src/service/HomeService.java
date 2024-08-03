@@ -1,20 +1,20 @@
 package service;
 
-import view.CinemaView;
+import view.HomeView;
 
 import java.util.function.Predicate;
 
-public class CinemeService {
-    private CinemaView cinemaView = new CinemaView();
+public class HomeService {
+    private HomeView homeView = new HomeView();
 
     public String checkValidatedInput(String prompt, Predicate<String> validate, Predicate<String> checkDuplicate, String errorMessage) {
         String input;
         do {
-            input = cinemaView.getInput(prompt);
+            input = homeView.getInput(prompt);
             if (!validate.test(input)) {
-                cinemaView.showMessage("Thông tin không hợp lệ hoặc không được để trống");
+                homeView.showMessage("Thông tin không hợp lệ hoặc không được để trống");
             } else if (checkDuplicate != null && checkDuplicate.test(input)) {
-                cinemaView.showMessage(errorMessage);
+                homeView.showMessage(errorMessage);
             } else {
                 return input;
             }

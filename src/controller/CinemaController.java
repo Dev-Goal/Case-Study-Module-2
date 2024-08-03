@@ -2,15 +2,15 @@ package controller;
 
 import csvutil.CinemaCSVUtil;
 import model.Cinema;
-import service.CinemeService;
-import view.CinemaView;
+import service.HomeService;
+import view.HomeView;
 
 import java.util.Map;
 import java.util.Objects;
 
 public class CinemaController {
-    private CinemaView cinemaView = new CinemaView();
-    private CinemeService cinemeService = new CinemeService();
+    private HomeView homeView = new HomeView();
+    private HomeService homeService = new HomeService();
     private static final String CINEMA_FILE_PATH = "src/data/cinema.csv";
     private Map<String, Cinema> cinemaData;
 
@@ -20,25 +20,25 @@ public class CinemaController {
 
     public void showCinemaList() {
         loadData();
-        cinemaView.showMessage("Danh sách rạp chiếu phim");
+        homeView.showMessage("Danh sách rạp chiếu phim");
         cinemaData.values().stream().filter(Objects::nonNull).forEach(cinema -> {
-            cinemaView.showDetailCinema(cinema);
-            cinemaView.showMessage("-----------------------------------------------------------------------");
+            homeView.showDetailCinema(cinema);
+            homeView.showMessage("-----------------------------------------------------------------------");
         });
     }
 
     public void addCinema() {
         loadData();
-        cinemaView.showMessage("Thêm rạp chiếu phim");
-        String idCinema = cinemeService.checkValidatedInput("ID rạp chiếu phim: ",
+        homeView.showMessage("Thêm rạp chiếu phim");
+        String idCinema = homeService.checkValidatedInput("ID rạp chiếu phim: ",
                 input -> !input.trim().isEmpty(),
                 id -> cinemaData.values().stream().anyMatch(cinema -> cinema.getIdCinema().equalsIgnoreCase(id)),
                 "ID rạp chiếu phim đã có");
-        String nameCinema = cinemeService.checkValidatedInput("Tên rạp chiếu phim: ",
+        String nameCinema = homeService.checkValidatedInput("Tên rạp chiếu phim: ",
                 input -> !input.trim().isEmpty(),
                 name -> cinemaData.values().stream().anyMatch(cinema -> cinema.getNameCinema().equalsIgnoreCase(name)),
                 "Tên rạp chiếu phim đã có. Nhập tên rạp chiếu phim khác");
-        int numberOfScreenRoom = Integer.parseInt(cinemeService.checkValidatedInput("Số lương phòng chiếu: ",
+        int numberOfScreenRoom = Integer.parseInt(homeService.checkValidatedInput("Số lương phòng chiếu: ",
                 input -> {
                     try {
                         int value = Integer.parseInt(input);
@@ -51,18 +51,18 @@ public class CinemaController {
         Cinema cinema = new Cinema(idCinema, nameCinema, numberOfScreenRoom);
         cinemaData.put(idCinema, cinema);
         CinemaCSVUtil.writeCinemaToCSV(cinemaData, CINEMA_FILE_PATH);
-        cinemaView.showMessage("Thêm rạp chiếu phim thành công");
+        homeView.showMessage("Thêm rạp chiếu phim thành công");
     }
 
     public void editCinema() {
         loadData();
-        cinemaView.showMessage("Chỉnh sửa rạp chiếu phim");
-        String idCinema = cinemeService.checkValidatedInput("ID rạp chiếu: ",
+        homeView.showMessage("Chỉnh sửa rạp chiếu phim");
+        String idCinema = homeService.checkValidatedInput("ID rạp chiếu: ",
                 input -> !input.trim().isEmpty(),
                 id -> !cinemaData.values().stream().anyMatch(cinema -> cinema.getIdCinema().equalsIgnoreCase(id)),
                 "Không có rạp chiếu phim thuộc ID này");
         Cinema cinema = cinemaData.get(idCinema);
-        String nameCinema = cinemeService.checkValidatedInput("Tên rạp chiếu phim (bỏ qua nếu không thay đổi): ",
+        String nameCinema = homeService.checkValidatedInput("Tên rạp chiếu phim (bỏ qua nếu không thay đổi): ",
                 input -> true,
                 name -> !name.trim().isEmpty() && cinemaData.values().stream()
                         .anyMatch(newCinema -> newCinema.getNameCinema().equalsIgnoreCase(name)
@@ -72,7 +72,7 @@ public class CinemaController {
         if (!nameCinema.trim().isEmpty()) {
             cinema.setNameCinema(nameCinema);
         }
-        String numberOfScreenRoom = cinemeService.checkValidatedInput("Số lượng phòng chiếu (bỏ qua nếu không thay đổi): ",
+        String numberOfScreenRoom = homeService.checkValidatedInput("Số lượng phòng chiếu (bỏ qua nếu không thay đổi): ",
                 input -> {
                     if (input.trim().isEmpty()) {
                         return true;
@@ -88,22 +88,22 @@ public class CinemaController {
             cinema.setNumberOfScreenRoom(Integer.parseInt(numberOfScreenRoom));
         }
         CinemaCSVUtil.writeCinemaToCSV(cinemaData, CINEMA_FILE_PATH);
-        cinemaView.showMessage("Chỉnh sửa rạp chiếu phim thành công");
+        homeView.showMessage("Chỉnh sửa rạp chiếu phim thành công");
     }
 
     public void deleteCinema() {
         loadData();
-        cinemaView.showMessage("Xóa rạp chiếu phim");
-        String idCinema = cinemeService.checkValidatedInput("ID rạp chiếu phim: ",
+        homeView.showMessage("Xóa rạp chiếu phim");
+        String idCinema = homeService.checkValidatedInput("ID rạp chiếu phim: ",
                 input -> !input.trim().isEmpty(),
                 id -> !cinemaData.values().stream().anyMatch(cinema -> cinema.getIdCinema().equalsIgnoreCase(id)),
                 "Không có rạp chiếu phim thuộc ID này");
-        String message = cinemaView.getInput("Có chắc chắn muốn xóa rạp chiếu phim này: ");
+        String message = homeView.getInput("Có chắc chắn muốn xóa rạp chiếu phim này: ");
         if (message.equalsIgnoreCase("Có")) {
             cinemaData.remove(idCinema);
             CinemaCSVUtil.writeCinemaToCSV(cinemaData, CINEMA_FILE_PATH);
-            cinemaView.showMessage("Xóa rạp chiếu phim thành công");
+            homeView.showMessage("Xóa rạp chiếu phim thành công");
         }
-        cinemaView.showMessage("Hủy xóa rạp chiếu");
+        homeView.showMessage("Hủy xóa rạp chiếu");
     }
 }

@@ -5,15 +5,15 @@ import csvutil.MovieCSVUtil;
 import csvutil.ShowtimeCSVUtil;
 import model.Movie;
 import model.Showtime;
-import service.CinemeService;
-import view.CinemaView;
+import service.HomeService;
+import view.HomeView;
 
 import java.util.Map;
 import java.util.Objects;
 
 public class MovieController {
-    private CinemaView cinemaView = new CinemaView();
-    private CinemeService cinemeService = new CinemeService();
+    private HomeView homeView = new HomeView();
+    private HomeService homeService = new HomeService();
     private static final String MOVIE_FILE_PATH = "src/data/movie.csv";
     private static final String SHOWTIME_FILE_PATH = "src/data/showtime.csv";
     private Map<String, Movie> movieData;
@@ -26,33 +26,33 @@ public class MovieController {
 
     public void showMovieList() {
         loadData();
-        cinemaView.showMessage("Danh sách phim");
+        homeView.showMessage("Danh sách phim");
         movieData.values().stream().filter(Objects::nonNull).forEach(movie -> {
-            cinemaView.showDetailMovie(movie);
-            cinemaView.showMessage("Các suất chiếu:");
+            homeView.showDetailMovie(movie);
+            homeView.showMessage("Các suất chiếu:");
             showtimeData.values().stream()
                     .filter(showtime -> showtime.getIdMovie().equals(movie.getIdMovie()))
                     .forEach(showtime -> {
-                        cinemaView.showMessage("Suất chiếu: " + showtime.getStartTime());
+                        homeView.showMessage("Suất chiếu: " + showtime.getStartTime());
                     });
-            cinemaView.showMessage("-----------------------------------------------------------------------");
+            homeView.showMessage("-----------------------------------------------------------------------");
         });
     }
 
     public void addMovie() {
         loadData();
-        cinemaView.showMessage("Thêm phim");
-        String idMovie = cinemeService.checkValidatedInput("ID phim: ",
+        homeView.showMessage("Thêm phim");
+        String idMovie = homeService.checkValidatedInput("ID phim: ",
                 input -> !input.trim().isEmpty(),
                 id -> movieData.values().stream().anyMatch(movie -> movie.getIdMovie().equalsIgnoreCase(id)),
                 "ID phim đã có. Nhập ID khác");
-        String nameMovie = cinemeService.checkValidatedInput("Tên phim: ",
+        String nameMovie = homeService.checkValidatedInput("Tên phim: ",
                 input -> !input.trim().isEmpty(),
                 name -> movieData.values().stream().anyMatch(movie -> movie.getNameMovie().equalsIgnoreCase(name)),
                 "Tên phim đã có. Nhập tên phim khác");
-        String genreMovie = cinemeService.checkValidatedInput("Thể loại: ",
+        String genreMovie = homeService.checkValidatedInput("Thể loại: ",
                 input -> !input.trim().isEmpty(), null, "Thể loại phim không được để trống");
-        int duration = Integer.parseInt(cinemeService.checkValidatedInput(
+        int duration = Integer.parseInt(homeService.checkValidatedInput(
                 "Thời lượng: ",
                 input -> {
                     try {
@@ -63,33 +63,33 @@ public class MovieController {
                     }
                 }, null, "Thời lượng không hợp lệ"
         ));
-        String imageMovie = cinemeService.checkValidatedInput("Hình ảnh: ",
+        String imageMovie = homeService.checkValidatedInput("Hình ảnh: ",
                 input -> !input.trim().isEmpty(),
                 null,
                 "Link hình ảnh không được để trống");
-        String trailerMovie = cinemeService.checkValidatedInput("Trailer: ",
+        String trailerMovie = homeService.checkValidatedInput("Trailer: ",
                 input -> !input.trim().isEmpty(),
                 null,
                 "Link trailer không được để trống");
-        String descMovie = cinemeService.checkValidatedInput("Nội dung: ",
+        String descMovie = homeService.checkValidatedInput("Nội dung: ",
                 input -> !input.trim().isEmpty(),
                 null,
                 "Nội dung không được để trống");
         Movie movie = new Movie(idMovie, nameMovie, genreMovie, duration, imageMovie, trailerMovie, descMovie);
         movieData.put(idMovie, movie);
         MovieCSVUtil.writeMovieToCSV(movieData, MOVIE_FILE_PATH);
-        cinemaView.showMessage("Thêm phim thành công");
+        homeView.showMessage("Thêm phim thành công");
     }
 
     public void editMovie() {
         loadData();
-        cinemaView.showMessage("Chỉnh sửa thông tin phim");
-        String idMovie = cinemeService.checkValidatedInput("ID phim: ",
+        homeView.showMessage("Chỉnh sửa thông tin phim");
+        String idMovie = homeService.checkValidatedInput("ID phim: ",
                 input -> !input.trim().isEmpty(),
                 id -> !movieData.values().stream().anyMatch(movie -> movie.getIdMovie().equalsIgnoreCase(id)),
                 "Không có phim thuộc ID này. Nhập ID khác");
         Movie movie = movieData.get(idMovie);
-        String nameMovie = cinemeService.checkValidatedInput("Tên phim (có thể bỏ qua nếu không thay đổi): ",
+        String nameMovie = homeService.checkValidatedInput("Tên phim (có thể bỏ qua nếu không thay đổi): ",
                 input -> true,
                 name -> !name.trim().isEmpty() && movieData.values().stream()
                         .anyMatch(newMovie -> newMovie.getNameMovie().equalsIgnoreCase(name)
@@ -99,7 +99,7 @@ public class MovieController {
         if (!nameMovie.trim().isEmpty()) {
             movie.setNameMovie(nameMovie);
         }
-        String genreMovie = cinemeService.checkValidatedInput(
+        String genreMovie = homeService.checkValidatedInput(
                 "Thể loại phim (có thể bỏ qua nếu không thay đổi): ",
                 input -> true,
                 null,
@@ -108,7 +108,7 @@ public class MovieController {
         if (!genreMovie.trim().isEmpty()) {
             movie.setGenreMovie(genreMovie);
         }
-        String duration = cinemeService.checkValidatedInput(
+        String duration = homeService.checkValidatedInput(
                 "Thời lượng (có thể bỏ qua nếu không thay đổi): ",
                 input -> {
                     if (input.trim().isEmpty()) {
@@ -127,7 +127,7 @@ public class MovieController {
         if (!duration.trim().isEmpty()) {
             movie.setDuration(Integer.parseInt(duration));
         }
-        String imageMovie = cinemeService.checkValidatedInput(
+        String imageMovie = homeService.checkValidatedInput(
                 "Nhập đường dẫn hình ảnh mới (bỏ qua nếu không thay đổi): ",
                 input -> true,
                 null,
@@ -136,7 +136,7 @@ public class MovieController {
         if (!imageMovie.trim().isEmpty()) {
             movie.setImage(imageMovie);
         }
-        String trailerMovie = cinemeService.checkValidatedInput(
+        String trailerMovie = homeService.checkValidatedInput(
                 "Nhập đường dẫn trailer mới (bỏ qua nếu không thay đổi): ",
                 input -> true,
                 null,
@@ -145,7 +145,7 @@ public class MovieController {
         if (!trailerMovie.trim().isEmpty()) {
             movie.setTrailer(trailerMovie);
         }
-        String descMovie = cinemeService.checkValidatedInput(
+        String descMovie = homeService.checkValidatedInput(
                 "Nhập mô tả nội dung phim mới (bỏ qua nếu không thay đổi): ",
                 input -> true,
                 null,
@@ -155,23 +155,23 @@ public class MovieController {
             movie.setDesc(descMovie);
         }
         MovieCSVUtil.writeMovieToCSV(movieData, MOVIE_FILE_PATH);
-        cinemaView.showMessage("Chỉnh sửa thông tin phim thành công");
+        homeView.showMessage("Chỉnh sửa thông tin phim thành công");
     }
 
     public void deleteMovie() {
         loadData();
-        cinemaView.showMessage("Xóa phim");
-        String idMovie = cinemeService.checkValidatedInput("ID phim: ",
+        homeView.showMessage("Xóa phim");
+        String idMovie = homeService.checkValidatedInput("ID phim: ",
                 input -> !input.trim().isEmpty(),
                 id -> !movieData.values().stream().anyMatch(movie -> movie.getIdMovie().equalsIgnoreCase(id)),
                 "Không có phim thuộc ID này");
-        String message = cinemaView.getInput("Có chắc chắn xóa phim này: ");
+        String message = homeView.getInput("Có chắc chắn xóa phim này: ");
         if (message.equalsIgnoreCase("Có")) {
             movieData.remove(idMovie);
             MovieCSVUtil.writeMovieToCSV(movieData, MOVIE_FILE_PATH);
-            cinemaView.showMessage("Xóa phim thành công");
+            homeView.showMessage("Xóa phim thành công");
         } else {
-            cinemaView.showMessage("Hủy xóa phim");
+            homeView.showMessage("Hủy xóa phim");
         }
     }
 }

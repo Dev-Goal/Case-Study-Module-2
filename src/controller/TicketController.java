@@ -1,8 +1,8 @@
 package controller;
 
 public class TicketController {
-//    private CinemaView cinemaView = new CinemaView();
-//    private CinemeService cinemeService = new CinemeService();
+//    private HomeView cinemaView = new HomeView();
+//    private HomeService cinemeService = new HomeService();
 //    private Map<String, Ticket> ticketData = new HashMap<>();
 //
 //    private void bookTicket() {

@@ -6,8 +6,8 @@ import csvutil.ShowtimeCSVUtil;
 import model.Movie;
 import model.ScreenRoom;
 import model.Showtime;
-import service.CinemeService;
-import view.CinemaView;
+import service.HomeService;
+import view.HomeView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ShowtimeController {
-    private CinemaView cinemaView = new CinemaView();
-    private CinemeService cinemeService = new CinemeService();
+    private HomeView homeView = new HomeView();
+    private HomeService homeService = new HomeService();
     private static final String MOVIE_FILE_PATH = "src/data/movie.csv";
     private static final String SCREENROOM_FILE_PATH = "src/data/screenroom.csv";
     private static final String SHOWTIME_FILE_PATH = "src/data/showtime.csv";
@@ -32,7 +32,7 @@ public class ShowtimeController {
 
     public void showListShowTimes() {
         loadData();
-        cinemaView.showMessage("Danh sách suất chiếu");
+        homeView.showMessage("Danh sách suất chiếu");
         showtimeData.values().stream().filter(Objects::nonNull).forEach(showtime -> {
             String idShowtime = showtime.getIdShowtime();
             String idMovie = showtime.getIdMovie();
@@ -43,36 +43,36 @@ public class ShowtimeController {
             String idScreenRoom = showtime.getIdScreenRoom();
             String nameScreenRoom = screenRoomData.get(idScreenRoom) != null ? screenRoomData.get(idScreenRoom).getNameScreenRoom() : "Không có phòng chiếu";
             int availableSeats = showtime.getAvailableSeats();
-            cinemaView.showMessage("ID suất chiếu: " + idShowtime + " - Tên phim: " + nameMovie);
-            cinemaView.showMessage("Thời gian bắt đầu: " + startTime + " - Thời lượng: " + duration +  " - Thời gian kết thúc: " + endTime);
-            cinemaView.showMessage("Phòng chiếu: " + nameScreenRoom + " - Số ghế còn lại: " + availableSeats);
-            cinemaView.showMessage("-----------------------------------------------------------");
+            homeView.showMessage("ID suất chiếu: " + idShowtime + " - Tên phim: " + nameMovie);
+            homeView.showMessage("Thời gian bắt đầu: " + startTime + " - Thời lượng: " + duration +  " - Thời gian kết thúc: " + endTime);
+            homeView.showMessage("Phòng chiếu: " + nameScreenRoom + " - Số ghế còn lại: " + availableSeats);
+            homeView.showMessage("-----------------------------------------------------------");
         });
     }
 
     public void addShowTimes() {
         loadData();
-        cinemaView.showMessage("Thêm suất chiếu");
-        String idShowtime = cinemeService.checkValidatedInput("ID suất chiếu: ",
+        homeView.showMessage("Thêm suất chiếu");
+        String idShowtime = homeService.checkValidatedInput("ID suất chiếu: ",
                 input -> !input.trim().isEmpty(),
                 id -> showtimeData.values().stream().anyMatch(showtime -> showtime.getIdShowtime().equalsIgnoreCase(id)),
                 "ID suất chiếu này đã có. Nhập ID khác");
-        String idMovie = cinemeService.checkValidatedInput("ID phim: ",
+        String idMovie = homeService.checkValidatedInput("ID phim: ",
                 input -> !input.trim().isEmpty(),
                 id -> !movieData.values().stream().anyMatch(movie -> movie.getIdMovie().equalsIgnoreCase(id)),
                 "Không có tên phim thuộc ID này");
         Movie movie = movieData.get(idMovie);
         System.out.println(movie);
-        String startTimeStr = cinemaView.getInput("Thời gian bắt đầu (HH:mm dd:MM:yyyy): ");
+        String startTimeStr = homeView.getInput("Thời gian bắt đầu (HH:mm dd:MM:yyyy): ");
         LocalDateTime startTime;
         try {
             startTime = LocalDateTime.parse(startTimeStr, DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy"));
         } catch (Exception e) {
-            cinemaView.showMessage("Thời gian không đúng form");
+            homeView.showMessage("Thời gian không đúng form");
             return;
         }
         LocalDateTime endTime = startTime.plusMinutes(movie.getDuration());
-        String idScreenRoom = cinemeService.checkValidatedInput("ID phòng chiếu: ",
+        String idScreenRoom = homeService.checkValidatedInput("ID phòng chiếu: ",
                 input -> !input.trim().isEmpty(),
                 id -> !screenRoomData.values().stream().anyMatch(screenRoom -> screenRoom.getIdScreenRoom().equalsIgnoreCase(id)),
                 "Không có phòng chiếu thuộc ID này");
@@ -80,30 +80,30 @@ public class ShowtimeController {
         Showtime showtime = new Showtime(idShowtime, idMovie, movie.getDuration(), startTime, endTime,
                 idScreenRoom, screenRoom.getTotalSeats());
         showtimeData.put(idShowtime, showtime);
-        screenRoom.addShowtimes(showtime);
-        movie.addShowtimes(showtime);
+//        screenRoom.addShowtimes(showtime);
+//        movie.addShowtimes(showtime);
         ShowtimeCSVUtil.writeShowtimeToCSV(showtimeData, SHOWTIME_FILE_PATH);
-        cinemaView.showMessage("Thêm suất chiếu thành công");
+        homeView.showMessage("Thêm suất chiếu thành công");
     }
 
     public void editShowTimes() {
         loadData();
-        cinemaView.showMessage("Chỉnh sửa suất chiếu");
-        String idShowtime = cinemeService.checkValidatedInput("ID suất chiếu: ",
+        homeView.showMessage("Chỉnh sửa suất chiếu");
+        String idShowtime = homeService.checkValidatedInput("ID suất chiếu: ",
                 input -> !input.trim().isEmpty(),
                 id -> !showtimeData.values().stream().anyMatch(showtime -> showtime.getIdShowtime().equalsIgnoreCase(id)),
                 "Không có suất chiếu thuộc ID này");
         Showtime showtime = showtimeData.get(idShowtime);
-        String startTimeStr = cinemaView.getInput("Thời gian bắt đầu (HH:mm dd:MM:yyyy): ");
+        String startTimeStr = homeView.getInput("Thời gian bắt đầu (HH:mm dd:MM:yyyy): ");
         LocalDateTime startTime;
         try {
             startTime = LocalDateTime.parse(startTimeStr, DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy"));
         } catch (Exception e) {
-            cinemaView.showMessage("Thời gian không đúng form");
+            homeView.showMessage("Thời gian không đúng form");
             return;
         }
         LocalDateTime endTime = startTime.plusMinutes(showtime.getDuration());
-        String idScreenRoom = cinemeService.checkValidatedInput("ID phòng chiếu: ",
+        String idScreenRoom = homeService.checkValidatedInput("ID phòng chiếu: ",
                 input -> true,
                 id -> !screenRoomData.values().stream().anyMatch(screenRoom -> screenRoom.getIdScreenRoom().equalsIgnoreCase(id)),
                 "Không có phòng chiếu thuộc ID này");
@@ -115,18 +115,18 @@ public class ShowtimeController {
         showtime.setEndTime(endTime);
         showtime.setAvailableSeats(screenRoom.getTotalSeats());
         ShowtimeCSVUtil.writeShowtimeToCSV(showtimeData, SHOWTIME_FILE_PATH);
-        cinemaView.showMessage("Chỉnh sửa suất chiếu thành công");
+        homeView.showMessage("Chỉnh sửa suất chiếu thành công");
     }
 
     public void deleteShowTimes() {
         loadData();
-        cinemaView.showMessage("Xóa suất chiếu");
-        String idShowtime = cinemeService.checkValidatedInput("ID suất chiếu: ",
+        homeView.showMessage("Xóa suất chiếu");
+        String idShowtime = homeService.checkValidatedInput("ID suất chiếu: ",
                 input -> !input.trim().isEmpty(),
                 id -> !showtimeData.values().stream().anyMatch(showtime -> showtime.getIdShowtime().equalsIgnoreCase(id)),
                 "Không có suất chiếu thuộc ID này");
         Showtime showtime = showtimeData.get(idShowtime);
-        String message = cinemaView.getInput("Bạn có chắc chắn muốn xóa suất chiếu này: ");
+        String message = homeView.getInput("Bạn có chắc chắn muốn xóa suất chiếu này: ");
         if (message.equalsIgnoreCase("Có")) {
             showtimeData.remove(idShowtime);
             ScreenRoom screenRoom = screenRoomData.get(showtime.getIdScreenRoom());
@@ -134,9 +134,9 @@ public class ShowtimeController {
                 screenRoom.getShowtimes().remove(showtime);
             }
             ShowtimeCSVUtil.writeShowtimeToCSV(showtimeData, SHOWTIME_FILE_PATH);
-            cinemaView.showMessage("Xóa suất chiếu thành công");
+            homeView.showMessage("Xóa suất chiếu thành công");
         } else {
-            cinemaView.showMessage("Hủy xóa suất chiếu");
+            homeView.showMessage("Hủy xóa suất chiếu");
         }
     }
 }
