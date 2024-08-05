@@ -26,9 +26,15 @@ public class HomeView {
         System.out.println(message);
     }
 
-    public void showDetailRoleOfUser(User user) {
-        showMessage("Tên đăng nhập: " + user.getUsername() + " - Vai trò: " + user.getRoles()
-                + " - Họ và tên: " + user.getFullName());
+
+    public void showDetailRoleOfCustomer(Customer customer) {
+        showMessage("Tên đăng nhập: " + customer.getUsername() + " - Vai trò: " + customer.getRoles()
+                + " - Họ và tên: " + customer.getFullName());
+    }
+
+    public void showDetailRoleOfEmployee(Employee employee) {
+        showMessage("Tên đăng nhập: " + employee.getUsername() + " - Vai trò: " + employee.getRoles()
+                + " - Họ và tên: " + employee.getFullName());
     }
 
     public void showDetailMovie(Movie movie) {
