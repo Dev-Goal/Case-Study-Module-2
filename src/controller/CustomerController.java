@@ -2,7 +2,6 @@ package controller;
 
 import csvutil.CustomerCSVUtil;
 import model.Customer;
-import model.Role;
 import service.ValidatorCustomer;
 import view.HomeView;
 
@@ -16,16 +15,6 @@ public class CustomerController {
 
     private void loadData() {
         this.customerData = CustomerCSVUtil.readCustomerFromCSV(CUSTOMER_FILE_PATH);
-    }
-
-    public void showCustomerList() {
-        loadData();
-        homeView.showMessage("Danh sách khách hàng");
-        for (Customer customer : customerData.values()) {
-            if (customer.getRoles().contains(Role.ROLE_USER) || customer.getRoles().contains(Role.ROLE_CUSTOMER)) {
-                homeView.showDetailRoleOfCustomer(customer);
-            }
-        }
     }
 
     public void signUpCustomer() {

@@ -10,6 +10,7 @@ public class HomeController {
     private final HomeView homeView = new HomeView();
     private final CustomerController customerController = new CustomerController();
     private final EmployeeController employeeController = new EmployeeController();
+    private final AdminController adminController = new AdminController();
     private final MovieController movieController = new MovieController();
     private final CinemaController cinemaController = new CinemaController();
     private final ScreenRoomController screenRoomController = new ScreenRoomController();
@@ -102,7 +103,7 @@ public class HomeController {
             homeView.showMessage("2. Quay lại");
             String choice = homeView.getInput("Chọn: ");
             switch (choice) {
-                case "1" -> customerController.showCustomerList();
+                case "1" -> adminController.showCustomerList();
                 case "2" -> {return;}
             }
         }while (true);
@@ -118,10 +119,10 @@ public class HomeController {
             homeView.showMessage("5. Quay lại");
             String choice = homeView.getInput("Chọn: ");
             switch (choice) {
-                case "1" -> employeeController.showEmployeeList();
-                case "2" -> employeeController.promoteEmployee();
-                case "3" -> employeeController.demoteEmployee();
-                case "4" -> employeeController.deleteEmployee();
+                case "1" -> adminController.showEmployeeList();
+                case "2" -> adminController.promoteEmployee();
+                case "3" -> adminController.demoteEmployee();
+                case "4" -> adminController.deleteEmployee();
                 case "5" -> {return;}
             }
         }while (true);

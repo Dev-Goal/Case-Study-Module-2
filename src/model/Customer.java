@@ -46,13 +46,11 @@ public class Customer extends Person{
         return roles;
     }
 
-    @Override
     public void addRole(Role role) {
-        super.addRole(role);
+        this.roles.add(role);
     }
 
-    @Override
     public void removeRole(Role role) {
-        super.removeRole(role);
+        this.roles.remove(role);
     }
 }
