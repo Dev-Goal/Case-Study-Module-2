@@ -3,7 +3,6 @@ package controller;
 import csvutil.CustomerCSVUtil;
 import model.Customer;
 import model.Role;
-import service.HomeService;
 import service.ValidatorCustomer;
 import view.HomeView;
 
@@ -12,7 +11,6 @@ import java.util.Map;
 public class CustomerController {
     private final HomeView homeView = new HomeView();
     private final MovieController movieController = new MovieController();
-    private final HomeService homeService = new HomeService();
     private Map<String, Customer> customerData;
     private static final String CUSTOMER_FILE_PATH = "src/data/customer.csv";
 
@@ -41,7 +39,7 @@ public class CustomerController {
             if (usernameError != null) {
                 homeView.showMessage(usernameError);
             }
-        }while (usernameError != null);
+        } while (usernameError != null);
         String password;
         String passwordError;
         do {
@@ -50,7 +48,7 @@ public class CustomerController {
             if (passwordError != null) {
                 homeView.showMessage(passwordError);
             }
-        }while (passwordError != null);
+        } while (passwordError != null);
         String fullName;
         String fullNameError;
         do {
@@ -59,7 +57,7 @@ public class CustomerController {
             if (fullNameError != null) {
                 homeView.showMessage(fullNameError);
             }
-        }while (fullNameError != null);
+        } while (fullNameError != null);
         String email;
         String emailError;
         do {
@@ -68,7 +66,7 @@ public class CustomerController {
             if (emailError != null) {
                 homeView.showMessage(emailError);
             }
-        }while (emailError != null);
+        } while (emailError != null);
         String phoneNumber;
         String phoneNumberError;
         do {
@@ -77,7 +75,7 @@ public class CustomerController {
             if (phoneNumberError != null) {
                 homeView.showMessage(phoneNumberError);
             }
-        }while (phoneNumberError != null);
+        } while (phoneNumberError != null);
         Customer customer = new Customer(username, password, fullName, email, phoneNumber);
         customerData.put(username, customer);
         CustomerCSVUtil.writeCustomerToCSV(customerData, CUSTOMER_FILE_PATH);
@@ -108,9 +106,12 @@ public class CustomerController {
             switch (choice) {
                 case "1" -> movieController.showMovieList();
                 case "3" -> editCustomer();
-                case "5" -> {return;}
+                case "4" -> changePasswordCustomer();
+                case "5" -> {
+                    return;
+                }
             }
-        }while (true);
+        } while (true);
     }
 
     private void editCustomer() {
@@ -172,5 +173,39 @@ public class CustomerController {
         customerData.put(username, customer);
         CustomerCSVUtil.writeCustomerToCSV(customerData, CUSTOMER_FILE_PATH);
         homeView.showMessage("Cập nhật thông tin thành công");
+    }
+
+    private void changePasswordCustomer() {
+        loadData();
+        homeView.showMessage("Để bảo mật, vui lòng đăng nhập để thay đổi thông tin");
+        String username = homeView.getInput("Tên đăng nhập: ");
+        String password = homeView.getInput("Mật khẩu: ");
+        Customer customer = customerData.get(username);
+        if (customer == null || !customer.getPassword().equals(password)) {
+            homeView.showMessage("Tên đăng nhập hoặc mật khẩu không đúng");
+            return;
+        }
+        ValidatorCustomer validatorCustomer = new ValidatorCustomer(customerData);
+        String newPassword;
+        String confirmNewPassword;
+        String newPasswordError;
+        do {
+            newPassword = homeView.getInput("Mật khẩu mới: ");
+            confirmNewPassword = homeView.getInput("Xác nhận mật khẩu mới: ");
+            if (!newPassword.equals(confirmNewPassword)) {
+                homeView.showMessage("Xác nhận mật khẩu và mật khẩu mới không trùng khớp");
+            } else {
+                newPasswordError = validatorCustomer.checkPassword(newPassword);
+                if (newPasswordError != null) {
+                    homeView.showMessage(newPasswordError);
+                } else {
+                    customer.setPassword(newPassword);
+                    break;
+                }
+            }
+        }while (true);
+        customerData.put(username, customer);
+        CustomerCSVUtil.writeCustomerToCSV(customerData, CUSTOMER_FILE_PATH);
+        homeView.showMessage("Thay đổi mật khẩu thành công");
     }
 }
