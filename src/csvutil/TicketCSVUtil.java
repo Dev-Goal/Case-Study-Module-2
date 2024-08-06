@@ -64,4 +64,24 @@ public class TicketCSVUtil {
             e.printStackTrace();
         }
     }
+
+    public static void appendTicketToCSV(Ticket ticket, String filePath) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true))) {
+            String promotions = String.join(";", ticket.getPromotions());
+            bufferedWriter.write(String.join(",",
+                    ticket.getIdTicket(),
+                    ticket.getIdMovie(),
+                    ticket.getIdShowtime(),
+                    ticket.getIdScreenRoom(),
+                    String.valueOf(ticket.getPrice()),
+                    ticket.getTypeTicket(),
+                    ticket.getNumberSeat(),
+                    ticket.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy")),
+                    ticket.getStatus().name(),
+                    promotions));
+            bufferedWriter.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

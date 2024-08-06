@@ -71,11 +71,13 @@ public class Showtime {
     }
 
     public void decreaseSeats(int numberOfSeats) {
-        if (availableSeats >= numberOfSeats) {
-            availableSeats -= numberOfSeats;
-        } else {
-            throw new IllegalArgumentException("Đã hết ghế");
+        if (numberOfSeats <= 0) {
+            throw new IllegalArgumentException("Số lượng ghế phải lớn hơn 0.");
         }
+        if (numberOfSeats > availableSeats) {
+            throw new IllegalArgumentException("Số lượng ghế yêu cầu vượt quá số ghế còn lại.");
+        }
+        this.availableSeats -= numberOfSeats;
     }
 
 }

@@ -57,7 +57,9 @@ public class Promotion {
 
     public void decreaseAmountPromotion() {
         if (amount > 0) {
-            amount--;
+            this.amount--;
+        } else {
+            throw new IllegalArgumentException("Số lượng mã khuyến mãi đã hết.");
         }
     }
 }

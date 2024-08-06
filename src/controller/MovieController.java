@@ -34,7 +34,8 @@ public class MovieController {
                     .filter(showtime -> showtime.getIdMovie().equals(movie.getIdMovie()))
                     .forEach(showtime -> {
                         homeView.showMessage("Suất chiếu " + showtime.getIdShowtime()
-                                + " - Thời gian bắt đầu: " + showtime.getStartTime());
+                                + " - Thời gian bắt đầu: " + showtime.getStartTime()
+                                + " - Phòng chiếu " + showtime.getIdScreenRoom());
                     });
             homeView.showMessage("-----------------------------------------------------------------------");
         });
