@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class Ticket {
     private String idTicket;
-    private String idShowtime;
     private String idMovie;
+    private String idShowtime;
     private String idScreenRoom;
     private double price;
     private String typeTicket;
@@ -15,11 +15,11 @@ public class Ticket {
     private StatusTicket status;
     private Set<String> promotions;
 
-    public Ticket(String idTicket, String idShowtime, String idMovie, String idScreenRoom, double price, String typeTicket,
+    public Ticket(String idTicket, String idMovie, String idShowtime, String idScreenRoom, double price, String typeTicket,
                   String numberSeat, LocalDateTime startTime, StatusTicket status, Set<String> promotions) {
         this.idTicket = idTicket;
-        this.idShowtime = idShowtime;
         this.idMovie = idMovie;
+        this.idShowtime = idShowtime;
         this.idScreenRoom = idScreenRoom;
         this.price = price;
         this.typeTicket = typeTicket;

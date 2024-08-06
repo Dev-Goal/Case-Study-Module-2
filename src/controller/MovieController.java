@@ -33,7 +33,8 @@ public class MovieController {
             showtimeData.values().stream()
                     .filter(showtime -> showtime.getIdMovie().equals(movie.getIdMovie()))
                     .forEach(showtime -> {
-                        homeView.showMessage("Suất chiếu: " + showtime.getStartTime());
+                        homeView.showMessage("Suất chiếu " + showtime.getIdShowtime()
+                                + " - Thời gian bắt đầu: " + showtime.getStartTime());
                     });
             homeView.showMessage("-----------------------------------------------------------------------");
         });

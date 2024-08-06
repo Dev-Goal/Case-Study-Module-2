@@ -10,6 +10,7 @@ import java.util.Map;
 public class EmployeeController {
     private final HomeView homeView = new HomeView();
     private final MovieController movieController = new MovieController();
+    private final TicketController ticketController = new TicketController();
     private Map<String, Employee> employeeData;
     private static final String EMPLOYEE_FILE_PATH = "src/data/employee.csv";
 
@@ -103,6 +104,7 @@ public class EmployeeController {
             String choice = homeView.getInput("Chọn: ");
             switch (choice) {
                 case "1" -> movieController.showMovieList();
+                case "2" -> ticketController.bookTicket();
                 case "3" -> editEmployee();
                 case "4" -> changePasswordEmployee();
                 case "5" -> {

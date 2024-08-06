@@ -16,6 +16,7 @@ public class HomeController {
     private final ScreenRoomController screenRoomController = new ScreenRoomController();
     private final ShowtimeController showtimeController = new ShowtimeController();
     private final PromotionController promotionController = new PromotionController();
+    private final TicketController ticketController = new TicketController();
 
     public HomeController() {
         createAccountAdmin();
@@ -90,7 +91,7 @@ public class HomeController {
                 case "5" -> showOptionalCinema();
                 case "6" -> showOptionalShowtime();
                 case "7" -> showOptionalPromotion();
-//                case "8" -> bookTicket();
+                case "8" -> ticketController.bookTicket();
                 case "10" -> {return;}
             }
         }while (true);
