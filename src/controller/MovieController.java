@@ -35,7 +35,8 @@ public class MovieController {
                     .forEach(showtime -> {
                         homeView.showMessage("Suất chiếu " + showtime.getIdShowtime()
                                 + " - Thời gian bắt đầu: " + showtime.getStartTime()
-                                + " - Phòng chiếu " + showtime.getIdScreenRoom());
+                                + " - Phòng chiếu " + showtime.getIdScreenRoom()
+                                + " - Số lượng ghế còn lại: " + showtime.getAvailableSeats());
                     });
             homeView.showMessage("-----------------------------------------------------------------------");
         });

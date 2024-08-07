@@ -22,8 +22,8 @@ public class TicketController {
     private static final String MOVIE_FILE_PATH = "src/data/movie.csv";
     private static final String SCREENROOM_FILE_PATH = "src/data/screenroom.csv";
     private static final String SHOWTIME_FILE_PATH = "src/data/showtime.csv";
-    private static final String CUSTOMER_FILE_PATH = "src/data/customer.csv";
     private static final String PROMOTION_FILE_PATH = "src/data/promotion.csv";
+    private static final String CUSTOMER_FILE_PATH = "src/data/customer.csv";
     private Map<String, Movie> movieData;
     private Map<String, ScreenRoom> screenRoomData;
     private Map<String, Showtime> showtimeData;
@@ -36,8 +36,8 @@ public class TicketController {
         this.screenRoomData = ScreenRoomCSVUtil.readScreenRoomFromCSV(SCREENROOM_FILE_PATH);
         this.showtimeData = ShowtimeCSVUtil.readShowTimeFromCSV(SHOWTIME_FILE_PATH);
         this.ticketData = TicketCSVUtil.readTicketFromCSV(TICKET_FILE_PATH);
-        this.customerData = CustomerCSVUtil.readCustomerFromCSV(CUSTOMER_FILE_PATH);
         this.promotionData = PromotionCSVUtil.readPromotionFromCSV(PROMOTION_FILE_PATH);
+        this.customerData = CustomerCSVUtil.readCustomerFromCSV(CUSTOMER_FILE_PATH);
     }
 
     public void bookTicket() {
@@ -63,11 +63,9 @@ public class TicketController {
                 id -> !screenRoomData.values().stream().anyMatch(screenRoom -> screenRoom.getIdScreenRoom().equals(id)),
                 "Không có phòng chiếu thuộc ID này");
 
-        int numberOfSeats = Integer.parseInt(homeView.getInput("Nhập số lượng ghế muốn đặt: "));
+        int numberOfSeats;
         try {
-            showtime.decreaseSeats(numberOfSeats);
-            showtimeData.put(idShowtime, showtime);
-            ShowtimeCSVUtil.writeShowtimeToCSV(showtimeData, SHOWTIME_FILE_PATH);
+            numberOfSeats = Integer.parseInt(homeView.getInput("Nhập số lượng ghế muốn đặt: "));
         } catch (IllegalArgumentException e) {
             homeView.showMessage(e.getMessage());
             return;
@@ -88,30 +86,35 @@ public class TicketController {
         Set<String> promotions = new HashSet<>();
         Set<String> codesPromotion = ticketService.getcodesPromotion();
         double totalDiscount = ticketService.calculateTotalDiscount(codesPromotion);
-        double totalPrice = Math.max(price - totalDiscount, 0);
+        double totalPrice = Math.max((price * numberOfSeats) - totalDiscount, 0);
         homeView.showMessage("Tổng số tiền thanh toán: " + totalPrice);
         Ticket ticket = new Ticket(idTicket, idMovie, idShowtime, idScreenRoom, totalPrice, typeTicked, numberSeat,
                 showtime.getStartTime(), statusTicket, promotions);
         String messagePay = homeView.getInput("Bạn có muốn thanh toán: ");
         if (messagePay.equalsIgnoreCase("Có")) {
-            ticket.setStatus(StatusTicket.PAID);
-        }
-        String username = homeView.getInput("Tên đăng nhập: ");
-        Customer customer = customerData.get(username);
-        customerService.updateUserRoleToCustomer(username);
-        ticketData.put(ticket.getIdTicket(), ticket);
-        TicketCSVUtil.appendTicketToCSV(ticket, TICKET_FILE_PATH);
-        for (String code : codesPromotion) {
-            Promotion promotion = promotionData.get(code);
-            if (promotion != null) {
-                try {
-                    promotion.decreaseAmountPromotion();
-                } catch (IllegalArgumentException e) {
-                    homeView.showMessage(e.getMessage());
+            String username = homeView.getInput("Tên đăng nhập: ");
+            Customer customer = customerData.get(username);
+            customerService.updateUserRoleToCustomer(username);
+            showtime.decreaseSeats(numberOfSeats);
+            showtimeData.put(idShowtime, showtime);
+            ShowtimeCSVUtil.writeShowtimeToCSV(showtimeData, SHOWTIME_FILE_PATH);
+            for (String code : codesPromotion) {
+                Promotion promotion = promotionData.get(code);
+                if (promotion != null) {
+                    try {
+                        promotion.decreaseAmountPromotion();
+                    } catch (IllegalArgumentException e) {
+                        homeView.showMessage(e.getMessage());
+                    }
                 }
             }
+            PromotionCSVUtil.writePromotionToCSV(promotionData, PROMOTION_FILE_PATH);
+            ticket.setStatus(StatusTicket.PAID);
+            ticketData.put(ticket.getIdTicket(), ticket);
+            TicketCSVUtil.appendTicketToCSV(ticket, TICKET_FILE_PATH);
+            homeView.showMessage("Đặt vé thành công");
+        } else {
+            homeView.showMessage("Hủy đặt vé");
         }
-        PromotionCSVUtil.writePromotionToCSV(promotionData, PROMOTION_FILE_PATH);
-        homeView.showMessage("Đặt vé thành công");
     }
 }
