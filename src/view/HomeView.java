@@ -69,6 +69,19 @@ public class HomeView {
         showMessage("Mô tả: " + promotion.getDesc() + " - Giảm giá: " + promotion.getDiscountAmount());
     }
 
+    public void showCustomerInfo(Customer customer) {
+        showMessage("Thông tin cá nhân");
+        showMessage("Họ và tên: " + customer.getFullName());
+        showMessage("Email: " + customer.getEmail());
+        showMessage("Số điện thoại: " + customer.getPhoneNumber());
+    }
 
+    public void showEmployeeInfo(Employee employee) {
+        showMessage("Thông tin cá nhân");
+        showMessage("Họ và tên: " + employee.getFullName());
+        showMessage("Email: " + employee.getEmail());
+        showMessage("Số điện thoại: " + employee.getPhoneNumber());
+        showMessage("Căn cước công dân: " + employee.getCitizen());
+    }
 
 }

@@ -17,24 +17,25 @@ public class TicketCSVUtil {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] values = line.split(",");
-                String idTicket = values[0];
-                String idMovie = values[1];
-                String idShowtime = values[2];
-                String idScreenRoom = values[3];
-                double price = Double.parseDouble(values[4]);
-                String typeTicket = values[5];
-                String numberSeat = values[6];
-                LocalDateTime startTime = LocalDateTime.parse(values[7], formatter);
-                StatusTicket statusTicket = StatusTicket.valueOf(values[8]);
-                Set<String> promotions = new HashSet<>();
-                if (!values[9].isEmpty()) {
-                    String[] promotionArray = values[9].split(";");
-                    promotions.addAll(Arrays.asList(promotionArray));
+                if (values.length == 10) {
+                    String idTicket = values[0];
+                    String idMovie = values[1];
+                    String idShowtime = values[2];
+                    String idScreenRoom = values[3];
+                    double price = Double.parseDouble(values[4]);
+                    String typeTicket = values[5];
+                    String numberSeat = values[6];
+                    LocalDateTime startTime = LocalDateTime.parse(values[7], formatter);
+                    StatusTicket statusTicket = StatusTicket.valueOf(values[8]);
+                    Set<String> promotions = new HashSet<>();
+                    if (!values[9].isEmpty()) {
+                        String[] promotionArray = values[9].split(";");
+                        promotions.addAll(Arrays.asList(promotionArray));
+                    }
+                    Ticket ticket = new Ticket(idTicket, idMovie, idShowtime, idScreenRoom, price,
+                            typeTicket, numberSeat, startTime, statusTicket, promotions);
+                    ticketData.put(idTicket, ticket);
                 }
-                Ticket ticket = new Ticket(idTicket, idMovie, idShowtime, idScreenRoom, price,
-                        typeTicket, numberSeat, startTime, statusTicket, promotions);
-                ticketData.put(idTicket, ticket);
-
             }
         } catch (IOException e) {
             e.printStackTrace();

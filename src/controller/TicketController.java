@@ -7,6 +7,7 @@ import service.HomeService;
 import service.TicketService;
 import view.HomeView;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -71,18 +72,22 @@ public class TicketController {
             homeView.showMessage(e.getMessage());
             return;
         }
-        double price = 85.0;
-        String typeTicked = homeView.getInput("Loại vé: ");
-        String numberSeat = homeView.getInput("Số ghế: ");
         Set<String> bookedSeats = ticketData.values().stream()
                 .filter(ticket -> ticket.getIdShowtime().equals(idShowtime))
                 .map(Ticket::getNumberSeat)
                 .collect(Collectors.toSet());
-
-        if (bookedSeats.contains(numberSeat)) {
-            homeView.showMessage("Ghế đã được đặt");
-            return;
-        }
+        homeView.showMessage("Các số ghế đã đặt cho suất chiếu " + idShowtime + ": " + bookedSeats.toString());
+        String numberSeat;
+        boolean seatAlreadyBooked;
+        do {
+            numberSeat = homeView.getInput("Số ghế: ");
+            seatAlreadyBooked = bookedSeats.contains(numberSeat);
+            if (seatAlreadyBooked) {
+                homeView.showMessage("Ghế đã được đặt, vui lòng chọn ghế khác.");
+            }
+        } while (seatAlreadyBooked);
+        double price = 85.0;
+        String typeTicked = homeView.getInput("Loại vé: ");
         StatusTicket statusTicket = StatusTicket.RESERVED;
         Set<String> codesPromotion = ticketService.getcodesPromotion();
         double totalDiscount = ticketService.calculateTotalDiscount(codesPromotion);
@@ -93,6 +98,7 @@ public class TicketController {
         String messagePay = homeView.getInput("Bạn có muốn thanh toán: ");
         if (messagePay.equalsIgnoreCase("Có")) {
             String username = homeView.getInput("Tên đăng nhập: ");
+            Customer customer = customerData.get(username);
             customerService.updateUserRoleToCustomer(username);
             showtime.decreaseSeats(numberOfSeats);
             showtimeData.put(idShowtime, showtime);
@@ -112,8 +118,31 @@ public class TicketController {
             ticketData.put(ticket.getIdTicket(), ticket);
             TicketCSVUtil.writeTicketToCSV(ticketData, TICKET_FILE_PATH);
             homeView.showMessage("Đặt vé thành công");
+            showTicketInfo(idTicket);
         } else {
             homeView.showMessage("Hủy đặt vé");
         }
+    }
+
+    private void showTicketInfo(String idTicket) {
+        loadData();
+        Ticket ticket = ticketData.get(idTicket);
+        if (ticket == null) {
+            homeView.showMessage("Vé không tồn tại.");
+            return;
+        }
+        Showtime showtime = showtimeData.get(ticket.getIdShowtime());
+        Movie movie = movieData.get(showtime.getIdMovie());
+        String movieName = movie.getNameMovie();
+        String screenRoomName = showtime.getIdScreenRoom();
+        String showtimeName = showtime.getIdShowtime();
+        String numberSeat = ticket.getNumberSeat();
+        LocalDateTime startTime = showtime.getStartTime();
+        homeView.showMessage("Thông tin vé:");
+        homeView.showMessage("Tên phim: " + movieName);
+        homeView.showMessage("Tên phòng chiếu: " + screenRoomName);
+        homeView.showMessage("Tên suất chiếu: " + showtimeName);
+        homeView.showMessage("Số ghế: " + numberSeat);
+        homeView.showMessage("Thời gian bắt đầu: " + startTime.toString());
     }
 }

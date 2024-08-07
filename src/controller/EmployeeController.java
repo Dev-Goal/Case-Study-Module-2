@@ -124,6 +124,7 @@ public class EmployeeController {
             homeView.showMessage("Tên đăng nhập hoặc mật khẩu không đúng");
             return;
         }
+        homeView.showEmployeeInfo(employee);
         ValidatorEmployee validatorEmployee = new ValidatorEmployee(employeeData);
         String fullName;
         do {

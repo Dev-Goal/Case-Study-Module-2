@@ -8,6 +8,7 @@ import model.Showtime;
 import service.HomeService;
 import view.HomeView;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Objects;
 
@@ -19,12 +20,14 @@ public class MovieController {
     private Map<String, Movie> movieData;
     private Map<String, Showtime> showtimeData;
 
+
     private void loadData() {
         this.movieData = MovieCSVUtil.readMovieFromCSV(MOVIE_FILE_PATH);
         this.showtimeData = ShowtimeCSVUtil.readShowTimeFromCSV(SHOWTIME_FILE_PATH);
     }
 
     public void showMovieList() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy");
         loadData();
         homeView.showMessage("Danh sách phim");
         movieData.values().stream().filter(Objects::nonNull).forEach(movie -> {
@@ -34,7 +37,7 @@ public class MovieController {
                     .filter(showtime -> showtime.getIdMovie().equals(movie.getIdMovie()))
                     .forEach(showtime -> {
                         homeView.showMessage("Suất chiếu " + showtime.getIdShowtime()
-                                + " - Thời gian bắt đầu: " + showtime.getStartTime()
+                                + " - Thời gian bắt đầu: " + showtime.getStartTime().format(formatter)
                                 + " - Phòng chiếu " + showtime.getIdScreenRoom()
                                 + " - Số lượng ghế còn lại: " + showtime.getAvailableSeats());
                     });

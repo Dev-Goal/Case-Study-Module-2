@@ -115,6 +115,7 @@ public class CustomerController {
             homeView.showMessage("Tên đăng nhập hoặc mật khẩu không đúng");
             return;
         }
+        homeView.showCustomerInfo(customer);
         ValidatorCustomer validatorCustomer = new ValidatorCustomer(customerData);
         String fullName;
         do {
