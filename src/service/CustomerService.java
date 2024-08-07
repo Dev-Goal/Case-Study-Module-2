@@ -19,11 +19,10 @@ public class CustomerService {
     public void updateUserRoleToCustomer(String username) {
         loadData();
         Customer customer = customerData.get(username);
-        if (customer != null) {
+        if (customer != null && customer.getRoles().contains(Role.ROLE_USER)) {
             customer.removeRole(Role.ROLE_USER);
             customer.addRole(Role.ROLE_CUSTOMER);
             homeView.showMessage("Bạn đã được thăng cấp lên CUSTOMER");
-
         }
         CustomerCSVUtil.writeCustomerToCSV(customerData, CUSTOMER_FILE_PATH);
     }

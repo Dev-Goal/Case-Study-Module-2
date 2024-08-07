@@ -104,4 +104,20 @@ public class Ticket {
     public void setPromotions(Set<String> promotions) {
         this.promotions = promotions;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "idTicket='" + idTicket + '\'' +
+                ", idMovie='" + idMovie + '\'' +
+                ", idShowtime='" + idShowtime + '\'' +
+                ", idScreenRoom='" + idScreenRoom + '\'' +
+                ", price=" + price +
+                ", typeTicket='" + typeTicket + '\'' +
+                ", numberSeat='" + numberSeat + '\'' +
+                ", startTime=" + startTime +
+                ", status=" + status +
+                ", promotions=" + promotions +
+                '}';
+    }
 }

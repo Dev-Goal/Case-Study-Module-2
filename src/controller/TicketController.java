@@ -7,6 +7,7 @@ import service.HomeService;
 import service.TicketService;
 import view.HomeView;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -83,17 +84,15 @@ public class TicketController {
             return;
         }
         StatusTicket statusTicket = StatusTicket.RESERVED;
-        Set<String> promotions = new HashSet<>();
         Set<String> codesPromotion = ticketService.getcodesPromotion();
         double totalDiscount = ticketService.calculateTotalDiscount(codesPromotion);
         double totalPrice = Math.max((price * numberOfSeats) - totalDiscount, 0);
         homeView.showMessage("Tổng số tiền thanh toán: " + totalPrice);
         Ticket ticket = new Ticket(idTicket, idMovie, idShowtime, idScreenRoom, totalPrice, typeTicked, numberSeat,
-                showtime.getStartTime(), statusTicket, promotions);
+                showtime.getStartTime(), statusTicket, codesPromotion);
         String messagePay = homeView.getInput("Bạn có muốn thanh toán: ");
         if (messagePay.equalsIgnoreCase("Có")) {
             String username = homeView.getInput("Tên đăng nhập: ");
-            Customer customer = customerData.get(username);
             customerService.updateUserRoleToCustomer(username);
             showtime.decreaseSeats(numberOfSeats);
             showtimeData.put(idShowtime, showtime);
@@ -111,7 +110,7 @@ public class TicketController {
             PromotionCSVUtil.writePromotionToCSV(promotionData, PROMOTION_FILE_PATH);
             ticket.setStatus(StatusTicket.PAID);
             ticketData.put(ticket.getIdTicket(), ticket);
-            TicketCSVUtil.appendTicketToCSV(ticket, TICKET_FILE_PATH);
+            TicketCSVUtil.writeTicketToCSV(ticketData, TICKET_FILE_PATH);
             homeView.showMessage("Đặt vé thành công");
         } else {
             homeView.showMessage("Hủy đặt vé");
