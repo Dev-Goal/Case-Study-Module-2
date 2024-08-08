@@ -8,6 +8,7 @@ import service.TicketService;
 import view.HomeView;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,12 +90,14 @@ public class TicketController {
         double price = 85.0;
         String typeTicked = homeView.getInput("Loại vé: ");
         StatusTicket statusTicket = StatusTicket.RESERVED;
-        Set<String> codesPromotion = ticketService.getcodesPromotion();
+        Set<String> codesPromotion = ticketService.getCodesPromotion();
         double totalDiscount = ticketService.calculateTotalDiscount(codesPromotion);
         double totalPrice = Math.max((price * numberOfSeats) - totalDiscount, 0);
+        homeView.showMessage("Tổng số tiền: " + price * numberOfSeats);
+        homeView.showMessage("Tổng discount: " + totalDiscount);
         homeView.showMessage("Tổng số tiền thanh toán: " + totalPrice);
         Ticket ticket = new Ticket(idTicket, idMovie, idShowtime, idScreenRoom, totalPrice, typeTicked, numberSeat,
-                showtime.getStartTime(), statusTicket, codesPromotion);
+                showtime.getStartTime(), statusTicket);
         String messagePay = homeView.getInput("Bạn có muốn thanh toán: ");
         if (messagePay.equalsIgnoreCase("Có")) {
             String username = homeView.getInput("Tên đăng nhập: ");
@@ -134,15 +137,18 @@ public class TicketController {
         Showtime showtime = showtimeData.get(ticket.getIdShowtime());
         Movie movie = movieData.get(showtime.getIdMovie());
         String movieName = movie.getNameMovie();
-        String screenRoomName = showtime.getIdScreenRoom();
-        String showtimeName = showtime.getIdShowtime();
+        ScreenRoom screenRoom = screenRoomData.get(showtime.getIdScreenRoom());
+        String screenRoomName = screenRoom.getNameScreenRoom();
         String numberSeat = ticket.getNumberSeat();
-        LocalDateTime startTime = showtime.getStartTime();
-        homeView.showMessage("Thông tin vé:");
-        homeView.showMessage("Tên phim: " + movieName);
-        homeView.showMessage("Tên phòng chiếu: " + screenRoomName);
-        homeView.showMessage("Tên suất chiếu: " + showtimeName);
-        homeView.showMessage("Số ghế: " + numberSeat);
-        homeView.showMessage("Thời gian bắt đầu: " + startTime.toString());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd:MM:yyyy");
+        String startTime = showtime.getStartTime().format(formatter);
+        homeView.showMessage("-------------------------------------");
+        homeView.showMessage("|             Thông tin vé          |");
+        homeView.showMessage("-------------------------------------");
+        homeView.showMessage("|  Phim: " + movieName + "                      |");
+        homeView.showMessage("|  Phòng chiếu: " + screenRoomName + "            |");
+        homeView.showMessage("|  Suất chiếu: " + startTime + "     |");
+        homeView.showMessage("|  Số ghế: " + numberSeat + "                      |");
+        homeView.showMessage("-------------------------------------");
     }
 }

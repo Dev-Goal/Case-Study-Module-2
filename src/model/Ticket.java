@@ -16,7 +16,7 @@ public class Ticket {
     private Set<String> promotions;
 
     public Ticket(String idTicket, String idMovie, String idShowtime, String idScreenRoom, double price, String typeTicket,
-                  String numberSeat, LocalDateTime startTime, StatusTicket status, Set<String> promotions) {
+                  String numberSeat, LocalDateTime startTime, StatusTicket status) {
         this.idTicket = idTicket;
         this.idMovie = idMovie;
         this.idShowtime = idShowtime;

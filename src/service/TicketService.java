@@ -19,18 +19,24 @@ public class TicketService {
 
 
 
-    public Set<String> getcodesPromotion() {
+    public Set<String> getCodesPromotion() {
         loadData();
         Set<String> codesPromotion = new HashSet<>();
         String addMorePromotions = homeView.getInput("Có muốn thêm mã khuyến mãi không: ");
         while (addMorePromotions.equalsIgnoreCase("Có")) {
             String codePromotion = homeView.getInput("Nhập mã khuyến mãi: ");
-            if (promotionData.containsKey(codePromotion) && promotionData.get(codePromotion).getAmount() > 0) {
-                codesPromotion.add(codePromotion);
-                promotionData.get(codePromotion).decreaseAmountPromotion();
-                homeView.showMessage("Thêm mã khuyến mãi thành công.");
+            if (codePromotion != null && !codePromotion.trim().isEmpty()) {
+                if (codesPromotion.contains(codePromotion)) {
+                    homeView.showMessage("Mã khuyến mãi đã được áp dụng.");
+                } else if (promotionData.containsKey(codePromotion) && promotionData.get(codePromotion).getAmount() > 0) {
+                    codesPromotion.add(codePromotion);
+                    promotionData.get(codePromotion).decreaseAmountPromotion();
+                    homeView.showMessage("Thêm mã khuyến mãi thành công.");
+                } else {
+                    homeView.showMessage("Mã khuyến mãi không hợp lệ hoặc số lượng đã hết");
+                }
             } else {
-                homeView.showMessage("Mã khuyến mãi không hợp lệ hoặc số lượng đã hết");
+                homeView.showMessage("Mã khuyến mãi không được để trống.");
             }
             addMorePromotions = homeView.getInput("Có muốn thêm mã khuyến mãi nữa không: ");
         }
