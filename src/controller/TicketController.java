@@ -93,12 +93,12 @@ public class TicketController {
         Set<String> codesPromotion = ticketService.getCodesPromotion();
         double totalDiscount = ticketService.calculateTotalDiscount(codesPromotion);
         double totalPrice = Math.max((price * numberOfSeats) - totalDiscount, 0);
-        homeView.showMessage("Tổng số tiền: " + price * numberOfSeats);
-        homeView.showMessage("Tổng discount: " + totalDiscount);
-        homeView.showMessage("Tổng số tiền thanh toán: " + totalPrice);
+        homeView.showMessage("Tổng số tiền: " + price * numberOfSeats + "00 VNĐ");
+        homeView.showMessage("Tổng discount: " + totalDiscount + "00 VNĐ");
+        homeView.showMessage("Tổng số tiền thanh toán: " + totalPrice + "00 VNĐ");
         Ticket ticket = new Ticket(idTicket, idMovie, idShowtime, idScreenRoom, totalPrice, typeTicked, numberSeat,
                 showtime.getStartTime(), statusTicket);
-        String messagePay = homeView.getInput("Bạn có muốn thanh toán: ");
+        String messagePay = homeView.getInput("Bạn có muốn thanh toán (Có/Không): ");
         if (messagePay.equalsIgnoreCase("Có")) {
             String username = homeView.getInput("Tên đăng nhập: ");
             Customer customer = customerData.get(username);

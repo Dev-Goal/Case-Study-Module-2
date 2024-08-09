@@ -68,7 +68,7 @@ public class ValidatorCustomer {
             return "Số điện thoại không được để trống";
         }
         if (!phoneNumber.matches("(84|0[3|5|7|8|9])+([0-9]{8})")) {
-            return "Số điện thoại không đúng định dạng";
+            return "Số điện thoại chỉ có 10 số (bắt đầu 84/03/05/07/08/09)";
         }
         if (customerData.values().stream().anyMatch(customer -> customer.getPhoneNumber().equals(phoneNumber))) {
             return "Số điện thoại đã được sử dụng";

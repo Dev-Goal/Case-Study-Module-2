@@ -22,7 +22,7 @@ public class TicketService {
     public Set<String> getCodesPromotion() {
         loadData();
         Set<String> codesPromotion = new HashSet<>();
-        String addMorePromotions = homeView.getInput("Có muốn thêm mã khuyến mãi không: ");
+        String addMorePromotions = homeView.getInput("Có muốn thêm mã khuyến mãi không (Có/Không): ");
         while (addMorePromotions.equalsIgnoreCase("Có")) {
             String codePromotion = homeView.getInput("Nhập mã khuyến mãi: ");
             if (codePromotion != null && !codePromotion.trim().isEmpty()) {
@@ -38,7 +38,7 @@ public class TicketService {
             } else {
                 homeView.showMessage("Mã khuyến mãi không được để trống.");
             }
-            addMorePromotions = homeView.getInput("Có muốn thêm mã khuyến mãi nữa không: ");
+            addMorePromotions = homeView.getInput("Có muốn thêm mã khuyến mãi nữa không (Có/Không): ");
         }
         return codesPromotion;
     }

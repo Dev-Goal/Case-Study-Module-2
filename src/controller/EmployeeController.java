@@ -2,6 +2,7 @@ package controller;
 
 import csvutil.EmployeeCSVUtil;
 import model.Employee;
+import model.Role;
 import service.ValidatorEmployee;
 import view.HomeView;
 
@@ -11,6 +12,7 @@ public class EmployeeController {
     private final HomeView homeView = new HomeView();
     private final MovieController movieController = new MovieController();
     private final TicketController ticketController = new TicketController();
+    private final AdminController adminController = new AdminController();
     private Map<String, Employee> employeeData;
     private static final String EMPLOYEE_FILE_PATH = "src/data/employee.csv";
 
@@ -96,22 +98,64 @@ public class EmployeeController {
 
     private void showMenuEmployee() {
         do {
-            homeView.showMessage("1. Xem danh sách phim");
-            homeView.showMessage("2. Đặt vé");
-            homeView.showMessage("3. Chỉnh sửa thông tin cá nhân");
-            homeView.showMessage("4. Thay đổi mật khẩu");
-            homeView.showMessage("5. Đăng xuất");
+            homeView.showMessage("1. Xem danh sách nhân viên");
+            homeView.showMessage("2. Xem danh sách quản lý");
+            homeView.showMessage("3. Xem danh sách phim");
+            homeView.showMessage("4. Đặt vé");
+            homeView.showMessage("5. Chỉnh sửa thông tin cá nhân");
+            homeView.showMessage("6. Thay đổi mật khẩu");
+            homeView.showMessage("7. Đăng xuất");
             String choice = homeView.getInput("Chọn: ");
             switch (choice) {
-                case "1" -> movieController.showMovieList();
-                case "2" -> ticketController.bookTicket();
-                case "3" -> editEmployee();
-                case "4" -> changePasswordEmployee();
-                case "5" -> {
+                case "1" -> showEmployee();
+                case "2" -> showManager();
+                case "3" -> movieController.showMovieList();
+                case "4" -> ticketController.bookTicket();
+                case "5" -> editEmployee();
+                case "6" -> changePasswordEmployee();
+                case "7" -> {
                     return;
                 }
             }
         } while (true);
+    }
+
+    private void showEmployee() {
+        loadData();
+        String username = homeView.getInput("Tên đăng nhập: ");
+        Employee employee = employeeData.get(username);
+        if (employee == null) {
+            homeView.showMessage("Thông tin không hợp lệ");
+            return;
+        }
+        if (employee.getRoles().contains(Role.ROLE_MANAGER)) {
+            homeView.showMessage("Danh sách nhân viên");
+            for (Employee employees : employeeData.values()) {
+                if (employees.getRoles().contains(Role.ROLE_EMPLOYEE)) {
+                    homeView.showDetailRoleOfEmployee(employees);
+                }
+            }
+        } else {
+            homeView.showMessage("Chỉ có quản lý mới xem được danh sách");
+        }
+    }
+
+    private void showManager() {
+        loadData();
+        String username = homeView.getInput("Tên đăng nhập: ");
+        Employee employee = employeeData.get(username);
+        if (employee == null) {
+            homeView.showMessage("Thông tin không hợp lệ");
+            return;
+        }
+        if (employee.getRoles().contains(Role.ROLE_MANAGER) || employee.getRoles().contains(Role.ROLE_EMPLOYEE)) {
+            homeView.showMessage("Danh sách quản lý");
+            for (Employee employees : employeeData.values()) {
+                if (employees.getRoles().contains(Role.ROLE_MANAGER)) {
+                    homeView.showDetailRoleOfEmployee(employees);
+                }
+            }
+        }
     }
 
     private void editEmployee() {

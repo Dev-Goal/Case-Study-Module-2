@@ -41,9 +41,6 @@ public class HomeView {
         showMessage("ID phim: " + movie.getIdMovie() + " - Tên phim: " + movie.getNameMovie()
                 + " - Thời lượng: " + movie.getDuration() + " phút");
         showMessage("Thể loại: " + movie.getGenreMovie());
-        showMessage("Hình ảnh: " + movie.getImage());
-        showMessage("Trailer: " + movie.getTrailer());
-        showMessage("Mô tả: " + movie.getDesc());
     }
 
     public void showDetailScreenRoom(ScreenRoom screenRoom, String cinemaName) {
@@ -56,7 +53,7 @@ public class HomeView {
     public void showDetailCinema(Cinema cinema) {
         showMessage("ID rạp chiếu phim: " + cinema.getIdCinema() + " - Tên rạp chiếu phim: " + cinema.getNameCinema()
                 + " - Số lượng phòng: " + cinema.getNumberOfScreenRoom());
-        showMessage("Các phòng chiếu: ");
+//        showMessage("Các phòng chiếu: ");
         for (ScreenRoom screenRoom : cinema.getScreenRooms()) {
             showMessage("ID phòng chiếu: " + screenRoom.getIdScreenRoom()
                     + " - Tên phòng chiếu: " + screenRoom.getNameScreenRoom());
