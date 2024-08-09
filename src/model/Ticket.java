@@ -10,22 +10,24 @@ public class Ticket {
     private String idScreenRoom;
     private double price;
     private String typeTicket;
-    private String numberSeat;
+    private Set<String> numberSeats;
     private LocalDateTime startTime;
     private StatusTicket status;
     private Set<String> promotions;
+    private String buyerName;
 
     public Ticket(String idTicket, String idMovie, String idShowtime, String idScreenRoom, double price, String typeTicket,
-                  String numberSeat, LocalDateTime startTime, StatusTicket status) {
+                  Set<String> numberSeats, LocalDateTime startTime, StatusTicket status,  String buyerName) {
         this.idTicket = idTicket;
         this.idMovie = idMovie;
         this.idShowtime = idShowtime;
         this.idScreenRoom = idScreenRoom;
         this.price = price;
         this.typeTicket = typeTicket;
-        this.numberSeat = numberSeat;
+        this.numberSeats = numberSeats;
         this.startTime = startTime;
         this.status = status;
+        this.buyerName = buyerName;
         this.promotions = promotions;
     }
 
@@ -73,12 +75,12 @@ public class Ticket {
         this.typeTicket = typeTicket;
     }
 
-    public String getNumberSeat() {
-        return numberSeat;
+    public Set<String> getNumberSeats() {
+        return numberSeats;
     }
 
-    public void setNumberSeat(String numberSeat) {
-        this.numberSeat = numberSeat;
+    public void setNumberSeats(Set<String> numberSeats) {
+        this.numberSeats = numberSeats;
     }
 
     public LocalDateTime getStartTime() {
@@ -95,6 +97,14 @@ public class Ticket {
 
     public void setStatus(StatusTicket status) {
         this.status = status;
+    }
+
+    public String getBuyerName() {
+        return buyerName;
+    }
+
+    public void setBuyerName(String buyerName) {
+        this.buyerName = buyerName;
     }
 
     public Set<String> getPromotions() {
@@ -114,7 +124,7 @@ public class Ticket {
                 ", idScreenRoom='" + idScreenRoom + '\'' +
                 ", price=" + price +
                 ", typeTicket='" + typeTicket + '\'' +
-                ", numberSeat='" + numberSeat + '\'' +
+                ", numberSeat='" + numberSeats + '\'' +
                 ", startTime=" + startTime +
                 ", status=" + status +
                 ", promotions=" + promotions +

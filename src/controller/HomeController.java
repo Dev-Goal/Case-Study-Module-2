@@ -80,6 +80,7 @@ public class HomeController {
             homeView.showMessage("6. Suất chiếu");
             homeView.showMessage("7. Khuyến mãi");
             homeView.showMessage("8. Đặt vé");
+            homeView.showMessage("9. Thông tin vé đã đặt");
             homeView.showMessage("10. Đăng xuất");
 
             String choice = homeView.getInput("Chọn: ");
@@ -92,6 +93,7 @@ public class HomeController {
                 case "6" -> showOptionalShowtime();
                 case "7" -> showOptionalPromotion();
                 case "8" -> ticketController.bookTicket();
+                case "9" -> ticketController.showTicket();
                 case "10" -> {return;}
             }
         }while (true);
